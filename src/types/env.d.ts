@@ -6,8 +6,7 @@ declare module '*.vue' {
   import { DefineComponent } from 'vue'
 
   // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-  const component: DefineComponent<{}, {}, any>
-
+  const component: DefineComponent<{}, {}, never>
   export default component
 }
 
@@ -16,3 +15,5 @@ declare global {
     readonly env: ImportMetaEnv
   }
 }
+
+declare module 'qs'

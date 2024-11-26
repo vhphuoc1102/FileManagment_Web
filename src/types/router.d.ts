@@ -1,10 +1,10 @@
-import type { RouteRecordRaw } from "vue-router"
+import type { RouteRecordRaw } from 'vue-router'
 import type { Component } from 'vue'
 
 interface RouteMetaCustom extends Record<string | number | symbol, unknown> {
   title?: string
   permission?: string
-  layout?: string
+  layout?: Component
 }
 
 declare module 'vue-router' {}

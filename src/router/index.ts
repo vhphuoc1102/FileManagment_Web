@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 import type { App } from 'vue'
+import MainLayout from '@/layouts/main/MainLayout.vue'
+import PlainLayout from '@/layouts/plain/PlainLayout.vue'
 
 const routes: AppRouteRecordRaw[] = [
   {
@@ -8,7 +10,7 @@ const routes: AppRouteRecordRaw[] = [
     component: () => import('@/views/MainPage.vue'),
     meta: {
       title: 'Main',
-      layout: 'MainLayout'
+      layout: MainLayout
     },
   },
   {
@@ -17,7 +19,7 @@ const routes: AppRouteRecordRaw[] = [
     component: () => import('@/views/auth/LoginPage.vue'),
     meta: {
       title: 'Login',
-      layout: 'LoginLayout'
+      layout: PlainLayout
     }
   },
   {
@@ -26,7 +28,7 @@ const routes: AppRouteRecordRaw[] = [
     component: () => import('@/views/auth/RegisterPage.vue'),
     meta: {
       title: 'Signup',
-      layout: 'RegisterLayout'
+      layout: PlainLayout
     }
   },
   {
@@ -35,7 +37,7 @@ const routes: AppRouteRecordRaw[] = [
     component: () => import('@/views/file/FilePage.vue'),
     meta: {
       title: 'File',
-      layout: 'MainLayout'
+      layout: MainLayout
     }
   }
 ];

@@ -2,26 +2,26 @@ import { defineStore } from 'pinia'
 import { store } from '@/stores'
 
 interface SettingState {
-  navBarVisible: boolean
+  sideBarVisible: boolean
 }
 
 export const useSettingStore = defineStore('setting', {
   state: () : SettingState => {
     return {
-      navBarVisible: true,
+      sideBarVisible: true,
     }
   },
   getters: {
-    getNavBarVisible(): boolean {
-      return this.navBarVisible;
+    getSideBarVisible(): boolean {
+      return this.sideBarVisible;
     }
   },
   actions: {
-    setNavBarVisible(visible: boolean): void {
-      this.navBarVisible = visible;
+    setSideBarVisible(visible: boolean): void {
+      this.sideBarVisible = visible;
     },
-    toggleNavBarVisible(): void {
-      this.navBarVisible = !this.navBarVisible;
+    toggleSideBarVisible(): void {
+      this.sideBarVisible = !this.sideBarVisible;
     }
   }
 })

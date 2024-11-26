@@ -1,19 +1,35 @@
 <template>
-  <div>
-    <Drawer @show="toggleVisible" @hide="toggleVisible" v-model:visible="visible">
-      TEST
-    </Drawer>
-  </div>
+  <Toolbar :pt="{
+    root: {
+      class: 'rounded-none border-x-0'
+    }
+  }">
+    <template #start>
+      <Button icon="pi pi-bars" @click="toggleVisible" />
+    </template>
+    <template #center>
+      <IconField>
+        <InputIcon>
+          <i class="pi pi-search" />
+        </InputIcon>
+        <InputText class="w-96" placeholder="Search" />
+      </IconField>
+    </template>
+    <template #end>
+      <div>
+        <
+        <Avatar class="mr-2" icon="pi pi-user" shape="circle" size="large" />
+      </div>
+    </template>
+  </Toolbar>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { useSettingStoreWithOut } from '@/stores/modules/setting'
-import { computed } from 'vue'
 
-const settingStore = useSettingStoreWithOut();
-const visible = computed(() => settingStore.getNavBarVisible);
+const settingStore = useSettingStoreWithOut()
 const toggleVisible = () => {
-  settingStore.toggleNavBarVisible();
+  settingStore.toggleSideBarVisible()
 }
 </script>
 

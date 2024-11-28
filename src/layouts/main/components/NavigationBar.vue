@@ -16,8 +16,7 @@
       </IconField>
     </template>
     <template #end>
-      <div>
-        <
+      <div class="flex items-center gap-2">
         <Avatar class="mr-2" icon="pi pi-user" shape="circle" size="large" />
       </div>
     </template>

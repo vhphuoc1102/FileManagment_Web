@@ -10,8 +10,11 @@ declare module 'vue' {
     Avatar: typeof import('primevue/avatar')['default']
     Badge: typeof import('primevue/badge')['default']
     Button: typeof import('primevue/button')['default']
+    Dialog: typeof import('primevue/dialog')['default']
     Divider: typeof import('primevue/divider')['default']
     Drawer: typeof import('primevue/drawer')['default']
+    FolderDialog: typeof import('./src/components/FolderDialog.vue')['default']
+    FolderItem: typeof import('./src/components/FolderItem.vue')['default']
     Form: typeof import('@primevue/forms/form')['default']
     IconField: typeof import('primevue/iconfield')['default']
     InputIcon: typeof import('primevue/inputicon')['default']
@@ -25,6 +28,7 @@ declare module 'vue' {
     SideBar: typeof import('primevue/sidebar')['default']
     Toast: typeof import('primevue/toast')['default']
     Toolbar: typeof import('primevue/toolbar')['default']
+    VFolder: typeof import('./src/components/VFolder.vue')['default']
   }
   export interface ComponentCustomProperties {
     Ripple: typeof import('primevue/ripple')['default']

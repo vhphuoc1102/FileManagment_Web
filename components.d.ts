@@ -10,6 +10,7 @@ declare module 'vue' {
     AlbumDialog: typeof import('./src/components/AlbumDialog.vue')['default']
     Avatar: typeof import('primevue/avatar')['default']
     Badge: typeof import('primevue/badge')['default']
+    Breadcrumb: typeof import('primevue/breadcrumb')['default']
     Button: typeof import('primevue/button')['default']
     Dialog: typeof import('primevue/dialog')['default']
     Divider: typeof import('primevue/divider')['default']
@@ -19,6 +20,7 @@ declare module 'vue' {
     FolderItem: typeof import('./src/components/FolderItem.vue')['default']
     Form: typeof import('@primevue/forms/form')['default']
     IconField: typeof import('primevue/iconfield')['default']
+    IftaLabel: typeof import('primevue/iftalabel')['default']
     InputIcon: typeof import('primevue/inputicon')['default']
     InputText: typeof import('primevue/inputtext')['default']
     Menu: typeof import('primevue/menu')['default']
@@ -34,7 +36,6 @@ declare module 'vue' {
     Toast: typeof import('primevue/toast')['default']
     Toolbar: typeof import('primevue/toolbar')['default']
     UploadFileDialog: typeof import('./src/components/UploadFileDialog.vue')['default']
-    VFolder: typeof import('./src/components/VFolder.vue')['default']
   }
   export interface ComponentCustomProperties {
     Ripple: typeof import('primevue/ripple')['default']

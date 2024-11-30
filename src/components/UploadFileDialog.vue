@@ -1,18 +1,26 @@
 <template>
-  <Dialog v-model:visible="visible" modal :pt="{
+  <Dialog v-model:visible="visible" :blockScroll="true" :closable="false" :dismissableMask="true" :draggable="false"
+          :pt="{
       root: {
-        class: 'w-96'
+        class: 'w-[30rem]'
+      },
+      content: {
+        class: 'flex flex-col gap-4'
       }
-    }">
-    <FileUpload name="demo[]" url="/api/upload" @upload="onTemplatedUpload()" :multiple="true" accept="image/*" :maxFileSize="1000000" @select="onSelectedFiles">
+    }" header="Upload files" modal>
+    <FileUpload :maxFileSize="1000000" :multiple="true" accept="image/*" name="demo[]" url="/api/upload"
+                @select="onSelectedFiles" @upload="onTemplatedUpload()">
       <template #header="{ chooseCallback, uploadCallback, clearCallback, files }">
         <div class="flex flex-wrap justify-between items-center flex-1 gap-4">
           <div class="flex gap-2">
-            <Button @click="chooseCallback()" icon="pi pi-images" rounded outlined severity="secondary"></Button>
-            <Button @click="uploadEvent(uploadCallback)" icon="pi pi-cloud-upload" rounded outlined severity="success" :disabled="!files || files.length === 0"></Button>
-            <Button @click="clearCallback()" icon="pi pi-times" rounded outlined severity="danger" :disabled="!files || files.length === 0"></Button>
+            <Button icon="pi pi-images" outlined rounded severity="secondary" @click="chooseCallback()"></Button>
+            <Button :disabled="!files || files.length === 0" icon="pi pi-cloud-upload" outlined rounded
+                    severity="success"
+                    @click="uploadEvent(uploadCallback)"></Button>
+            <Button :disabled="!files || files.length === 0" icon="pi pi-times" outlined rounded severity="danger"
+                    @click="clearCallback()"></Button>
           </div>
-          <ProgressBar :value="totalSizePercent" :showValue="false" class="md:w-20rem h-1 w-full md:ml-auto">
+          <ProgressBar :showValue="false" :value="totalSizePercent" class="md:w-20rem h-1 w-full md:ml-auto">
             <span class="whitespace-nowrap">{{ totalSize }}B / 1Mb</span>
           </ProgressBar>
         </div>
@@ -22,14 +30,17 @@
           <div v-if="files.length > 0">
             <h5>Pending</h5>
             <div class="flex flex-wrap gap-4">
-              <div v-for="(file, index) of files" :key="file.name + file.type + file.size" class="p-8 rounded-border flex flex-col border border-surface items-center gap-4">
+              <div v-for="(file, index) of files" :key="file.name + file.type + file.size"
+                   class="p-8 rounded-border flex flex-col border border-surface items-center gap-4">
                 <div>
-                  <img role="presentation" :alt="file.name" :src="file.objectURL" width="100" height="50" />
+                  <img :alt="file.name" :src="file.objectURL" height="50" role="presentation" width="100" />
                 </div>
-                <span class="font-semibold text-ellipsis max-w-60 whitespace-nowrap overflow-hidden">{{ file.name }}</span>
+                <span class="font-semibold text-ellipsis max-w-60 whitespace-nowrap overflow-hidden">{{ file.name
+                  }}</span>
                 <div>{{ formatSize(file.size) }}</div>
-                <Badge value="Pending" severity="warn" />
-                <Button icon="pi pi-times" @click="onRemoveTemplatingFile(file, removeFileCallback, index)" outlined rounded severity="danger" />
+                <Badge severity="warn" value="Pending" />
+                <Button icon="pi pi-times" outlined rounded
+                        severity="danger" @click="onRemoveTemplatingFile(file, removeFileCallback, index)" />
               </div>
             </div>
           </div>
@@ -37,14 +48,17 @@
           <div v-if="uploadedFiles.length > 0">
             <h5>Completed</h5>
             <div class="flex flex-wrap gap-4">
-              <div v-for="(file, index) of uploadedFiles" :key="file.name + file.type + file.size" class="p-8 rounded-border flex flex-col border border-surface items-center gap-4">
+              <div v-for="(file, index) of uploadedFiles" :key="file.name + file.type + file.size"
+                   class="p-8 rounded-border flex flex-col border border-surface items-center gap-4">
                 <div>
-                  <img role="presentation" :alt="file.name" :src="file.objectURL" width="100" height="50" />
+                  <img :alt="file.name" :src="file.objectURL" height="50" role="presentation" width="100" />
                 </div>
-                <span class="font-semibold text-ellipsis max-w-60 whitespace-nowrap overflow-hidden">{{ file.name }}</span>
+                <span class="font-semibold text-ellipsis max-w-60 whitespace-nowrap overflow-hidden">{{ file.name
+                  }}</span>
                 <div>{{ formatSize(file.size) }}</div>
-                <Badge value="Completed" class="mt-4" severity="success" />
-                <Button icon="pi pi-times" @click="removeUploadedFileCallback(index)" outlined rounded severity="danger" />
+                <Badge class="mt-4" severity="success" value="Completed" />
+                <Button icon="pi pi-times" outlined rounded severity="danger"
+                        @click="removeUploadedFileCallback(index)" />
               </div>
             </div>
           </div>
@@ -58,69 +72,69 @@
       </template>
     </FileUpload>
     <div class="flex justify-end gap-2">
-      <Button type="button" label="Cancel" severity="secondary" @click="close"/>
-      <Button type="button" label="Save" @click="onSave"/>
+      <Button label="Cancel" severity="secondary" type="button" @click="close" />
+      <Button label="Save" type="button" @click="onSave" />
     </div>
   </Dialog>
 </template>
 
-<script setup lang="ts">
-import { ref } from 'vue';
-import { usePrimeVue } from 'primevue/config';
-import { useToast } from "primevue/usetoast";
+<script lang="ts" setup>
+import { ref } from 'vue'
+import { usePrimeVue } from 'primevue/config'
+import { useToast } from 'primevue/usetoast'
 import type { FileUploadSelectEvent } from 'primevue/fileupload'
 
-const primevue = usePrimeVue();
-const toast = useToast();
+const primevue = usePrimeVue()
+const toast = useToast()
 
-const totalSize = ref(0);
-const totalSizePercent = ref(0);
-const files = ref<File[]>([]);
-const visible = defineModel<boolean | undefined>();
+const totalSize = ref(0)
+const totalSizePercent = ref(0)
+const files = ref<File[]>([])
+const visible = defineModel<boolean | undefined>()
 
 const onRemoveTemplatingFile = (file: File, removeFileCallback: (index: number) => void, index: number) => {
-  removeFileCallback(index);
-  totalSize.value -= parseInt(formatSize(file.size));
-  totalSizePercent.value = totalSize.value / 10;
-};
+  removeFileCallback(index)
+  totalSize.value -= parseInt(formatSize(file.size))
+  totalSizePercent.value = totalSize.value / 10
+}
 
 const onSelectedFiles = (event: FileUploadSelectEvent) => {
-  files.value = event.files;
+  files.value = event.files
   files.value.forEach((file) => {
-    totalSize.value += parseInt(formatSize(file.size));
-  });
-};
+    totalSize.value += parseInt(formatSize(file.size))
+  })
+}
 
 const uploadEvent = (callback: () => void) => {
-  totalSizePercent.value = totalSize.value / 10;
-  callback();
-};
+  totalSizePercent.value = totalSize.value / 10
+  callback()
+}
 
 const onTemplatedUpload = () => {
-  toast.add({ severity: "info", summary: "Success", detail: "File Uploaded", life: 3000 });
-};
+  toast.add({ severity: 'info', summary: 'Success', detail: 'File Uploaded', life: 3000 })
+}
 
 const formatSize = (bytes: number) => {
-  const k = 1024;
-  const dm = 3;
-  const sizes = !primevue.config.locale ? [] : primevue.config.locale.fileSizeTypes;
+  const k = 1024
+  const dm = 3
+  const sizes = !primevue.config.locale ? [] : primevue.config.locale.fileSizeTypes
 
   if (bytes === 0) {
-    return `0 ${sizes[0]}`;
+    return `0 ${sizes[0]}`
   }
 
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-  const formattedSize = parseFloat((bytes / Math.pow(k, i)).toFixed(dm));
+  const i = Math.floor(Math.log(bytes) / Math.log(k))
+  const formattedSize = parseFloat((bytes / Math.pow(k, i)).toFixed(dm))
 
-  return `${formattedSize} ${sizes[i]}`;
-};
+  return `${formattedSize} ${sizes[i]}`
+}
 
 const close = () => {
-  visible.value = false;
-};
+  visible.value = false
+}
 const onSave = () => {
   // TODO: Call API
-  close();
+  close()
 }
 </script>
 

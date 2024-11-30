@@ -1,37 +1,52 @@
 <template>
-  <Dialog v-model:visible="visible" modal header="Edit Profile" :style="{ width: '25rem' }">
-    <span class="text-surface-500 dark:text-surface-400 block mb-8">Update your information.</span>
-    <div class="flex items-center gap-4 mb-4">
-      <label for="username" class="font-semibold w-24">Username</label>
-      <InputText id="username" class="flex-auto" autocomplete="off" />
-    </div>
-    <div class="flex items-center gap-4 mb-8">
-      <label for="email" class="font-semibold w-24">Email</label>
-      <InputText id="email" class="flex-auto" autocomplete="off" />
-    </div>
+  <Dialog v-model:visible="visible" :blockScroll="true" :closable="false" :dismissableMask="true" :draggable="false"
+          :header="header" modal>
+    <IftaLabel>
+      <label class="font-semibold" for="folder">Folder name</label>
+      <InputText id="folder" autocomplete="off" class="flex-auto" />
+    </IftaLabel>
     <div class="flex justify-end gap-2">
-      <Button type="button" label="Cancel" severity="secondary" @click="close"></Button>
-      <Button type="button" label="Save" @click="onSave"></Button>
+      <Button label="Cancel" severity="secondary" type="button" @click="close"></Button>
+      <Button label="Save" type="button" @click="onSave"></Button>
     </div>
   </Dialog>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import type { FolderInfo } from '@/types/file'
-const visible = defineModel();
+import { computed } from 'vue'
 
-const props = defineProps({
-  folderInfo: {
-    type: Object as () => FolderInfo,
-    require: false
+const props = withDefaults(defineProps<{
+  folderInfo: FolderInfo
+}>(), {
+  folderInfo: () => {
+    return {
+      name: '',
+      directoryId: -1
+    }
   }
-});
+})
+
+const HEADER = {
+  CREATE: 'New Folder',
+  UPDATE: 'Update Folder'
+}
+
+const visible = defineModel<boolean | undefined>()
+const header = computed(() => {
+  if (!props.folderInfo) {
+    return HEADER.CREATE
+  } else {
+    return HEADER.UPDATE
+  }
+})
+
 const close = () => {
-  visible.value = false;
-};
+  visible.value = false
+}
 const onSave = () => {
   // TODO: Call API
-  close();
+  close()
 }
 </script>
 

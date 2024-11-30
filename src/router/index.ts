@@ -11,7 +11,7 @@ const routes: AppRouteRecordRaw[] = [
     meta: {
       title: 'Main',
       layout: MainLayout
-    },
+    }
   },
   {
     path: '/login',
@@ -32,15 +32,15 @@ const routes: AppRouteRecordRaw[] = [
     }
   },
   {
-    path: '/file',
-    name: 'File',
-    component: () => import('@/views/file/FilePage.vue'),
+    path: '/storage',
+    name: 'Storage',
+    component: () => import('@/views/storage/StoragePage.vue'),
     meta: {
-      title: 'File',
+      title: 'Storage',
       layout: MainLayout
     }
   }
-];
+]
 const router = createRouter({
   history: createWebHistory(),
   routes: routes as RouteRecordRaw[]

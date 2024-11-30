@@ -1,48 +1,49 @@
 <template>
-  <Dialog v-model:visible="visible" modal :header="header">
+  <Dialog v-model:visible="visible" :blockScroll="true" :closable="false" :dismissableMask="true" :draggable="false" :header="header"
+          modal>
     <div class="flex items-center gap-4 mb-4">
-      <label for="name" class="font-semibold w-24">Name</label>
-      <InputText id="name" class="flex-auto" autocomplete="off" />
+      <label class="font-semibold w-24" for="name">Name</label>
+      <InputText id="name" autocomplete="off" class="flex-auto" />
     </div>
     <div class="flex items-center gap-4 mb-8">
-      <label for="description" class="font-semibold w-24">Description</label>
-      <Textarea id="description" rows="5" cols="30" style="resize:none"/>
+      <label class="font-semibold w-24" for="description">Description</label>
+      <Textarea id="description" cols="30" rows="5" style="resize:none" />
     </div>
     <div class="flex justify-end gap-2">
-      <Button type="button" label="Cancel" severity="secondary" @click="close"/>
-      <Button type="button" label="Save" @click="onSave"/>
+      <Button label="Cancel" severity="secondary" type="button" @click="close" />
+      <Button label="Save" type="button" @click="onSave" />
     </div>
   </Dialog>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import type { AlbumInfo } from '@/types/album'
 import { computed } from 'vue'
 
 const HEADER = {
-  CREATE: "New Album",
-  UPDATE: "Update Album"
+  CREATE: 'New Album',
+  UPDATE: 'Update Album'
 }
-const visible = defineModel<boolean | undefined>();
+const visible = defineModel<boolean | undefined>()
 const props = defineProps({
   albumInfo: {
     type: Object as () => AlbumInfo,
     require: false
   }
-});
+})
 const header = computed(() => {
   if (!props.albumInfo) {
-    return HEADER.CREATE;
+    return HEADER.CREATE
   } else {
-    return HEADER.UPDATE;
+    return HEADER.UPDATE
   }
 })
 const close = () => {
-  visible.value = false;
-};
+  visible.value = false
+}
 const onSave = () => {
   // TODO: Call API
-  close();
+  close()
 }
 </script>
 

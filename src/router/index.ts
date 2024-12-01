@@ -39,6 +39,24 @@ const routes: AppRouteRecordRaw[] = [
       title: 'Storage',
       layout: MainLayout
     }
+  },
+  {
+    path: '/home',
+    name: 'Home',
+    component: () => import('@/views/home/HomePage.vue'),
+    meta: {
+      title: 'Home',
+      layout: MainLayout
+    }
+  },
+  {
+    path: '/location',
+    name: 'Location',
+    component: () => import('@/views/location/LocationPage.vue'),
+    meta: {
+      title: 'Location',
+      layout: MainLayout
+    }
   }
 ]
 const router = createRouter({

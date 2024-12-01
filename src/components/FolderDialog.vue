@@ -1,9 +1,13 @@
 <template>
   <Dialog v-model:visible="visible" :blockScroll="true" :closable="false" :dismissableMask="true" :draggable="false"
-          :header="header" modal>
+          :header="header" :pt="{
+            content: {
+              class: 'flex flex-col gap-5'
+            }
+          }" modal>
     <IftaLabel>
       <label class="font-semibold" for="folder">Folder name</label>
-      <InputText id="folder" autocomplete="off" class="flex-auto" />
+      <InputText id="folder" autocomplete="off" class="flex-auto w-96" />
     </IftaLabel>
     <div class="flex justify-end gap-2">
       <Button label="Cancel" severity="secondary" type="button" @click="close"></Button>
@@ -34,7 +38,7 @@ const HEADER = {
 
 const visible = defineModel<boolean | undefined>()
 const header = computed(() => {
-  if (!props.folderInfo) {
+  if (!props.folderInfo || props.folderInfo.directoryId == -1) {
     return HEADER.CREATE
   } else {
     return HEADER.UPDATE

@@ -17,7 +17,7 @@
     </template>
     <template #end>
       <div class="flex items-center gap-2">
-        <Avatar class="mr-2" icon="pi pi-user" shape="circle" size="large" />
+        <Avatar class="mr-2 cursor-pointer" icon="pi pi-user" shape="circle" size="large" />
       </div>
     </template>
   </Toolbar>

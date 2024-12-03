@@ -9,27 +9,24 @@
             variant="text" />
     <Button aria-label="Download" class="ml-2" icon="pi pi-download" rounded severity="secondary"
             variant="text" />
-    <Button aria-label="Move" class="ml-2" icon="pi pi-file-export" rounded severity="secondary"
-            variant="text" />
     <Button aria-label="Trash" class="ml-2" icon="pi pi-trash" rounded severity="secondary" variant="text" />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { useFolderStoreWithOut } from '@/stores/modules/folder'
-import { useFileStoreWithOut } from '@/stores/modules/file'
+import { useHomeStoreWithOut } from '@/stores/modules/home'
 import { computed } from 'vue'
 
 // Stores
-const folderStore = useFolderStoreWithOut()
-const fileStore = useFileStoreWithOut()
+const homeStore = useHomeStoreWithOut()
 
 // Variables
-const selectedItemsCount = computed(() => folderStore.getActivatedFolders.length + fileStore.getActivatedFiles.length)
+const selectedItemsCount = computed(() => homeStore.getFileTimeGroups.reduce((acc, group) => {
+  return acc + group.files.filter(file => file.activated).length
+}, 0))
 
 const onClose = () => {
-  folderStore.clearActivatedFolders()
-  fileStore.clearActivatedFiles()
+  homeStore.clearActivatedFiles()
 }
 </script>
 

@@ -8,3 +8,8 @@ export interface FileInfo {
   fileId: number
   image: File
 }
+
+export interface FileTimeGroupInfo {
+  time: string,
+  files: FileInfo[]
+}

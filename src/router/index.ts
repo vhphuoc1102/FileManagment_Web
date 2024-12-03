@@ -34,9 +34,33 @@ const routes: AppRouteRecordRaw[] = [
   {
     path: '/storage',
     name: 'Storage',
-    component: () => import('@/views/storage/StoragePage.vue'),
     meta: {
       title: 'Storage',
+      layout: MainLayout
+    },
+    children: [
+      {
+        path: '',
+        name: 'Root',
+        component: () => import('@/views/storage/StoragePage.vue')
+      },
+      {
+        path: ':id',
+        name: 'Child',
+        component: () => import('@/views/storage/StoragePage.vue'),
+        meta: {
+          title: 'Storage',
+          layout: MainLayout
+        }
+      }
+    ]
+  },
+  {
+    path: '/location',
+    name: 'Location',
+    component: () => import('@/views/location/LocationPage.vue'),
+    meta: {
+      title: 'Location',
       layout: MainLayout
     }
   },
@@ -50,11 +74,11 @@ const routes: AppRouteRecordRaw[] = [
     }
   },
   {
-    path: '/location',
-    name: 'Location',
-    component: () => import('@/views/location/LocationPage.vue'),
+    path: '/album',
+    name: 'Album',
+    component: () => import('@/views/album/AlbumPage.vue'),
     meta: {
-      title: 'Location',
+      title: 'Album',
       layout: MainLayout
     }
   }
@@ -67,5 +91,3 @@ const router = createRouter({
 export const setupRouter = (app: App<Element>) => {
   app.use(router)
 }
-
-export default router

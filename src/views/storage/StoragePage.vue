@@ -72,7 +72,6 @@ onMounted(() => {
 // Methods
 const onClickOutsideHandler = [
   () => {
-    console.log('TEST')
     folderStore.clearActivatedFolders()
     fileStore.clearActivatedFiles()
   },

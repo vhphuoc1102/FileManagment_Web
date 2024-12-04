@@ -10,7 +10,7 @@
         </a>
       </router-link>
       <a v-else-if="!item.route" :href="getBreadcrumbRoute(item.albumId)" :target="item.target"
-         v-bind="props.action">
+         v-bind="props.action" @click="onClickBreadCrumb(item)">
         <span class="text-surface-700 dark:text-surface-0">{{ item.name }}</span>
       </a>
     </template>
@@ -25,6 +25,7 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
 import { useAlbumStore } from '@/stores/modules/album'
+import type { MenuItem } from 'primevue/menuitem'
 
 // Stores
 const albumStore = useAlbumStore()
@@ -39,7 +40,10 @@ const items = computed(() => albumStore.getBreadcrumbs)
 // Methods
 const getBreadcrumbRoute = (albumId: number) => '/album/' + albumId
 
-
+const onClickBreadCrumb = (item: MenuItem) => {
+  const index = albumStore.getBreadcrumbs.findIndex((breadcrumb) => breadcrumb.albumId === item.albumId)
+  albumStore.setBreadcrumbs(albumStore.getBreadcrumbs.slice(0, index + 1))
+}
 </script>
 
 <style scoped>

@@ -34,9 +34,11 @@
 import type { FolderInfo } from '@/types/file'
 import { computed, ref } from 'vue'
 import { useFolderStoreWithOut } from '@/stores/modules/folder'
+import { useRouter } from 'vue-router'
 
 // Stores
 const folderStore = useFolderStoreWithOut()
+const router = useRouter()
 
 // Props
 const props = withDefaults(defineProps<FolderInfo>(), {
@@ -85,6 +87,8 @@ const onDbClick = () => {
   onClick()
   // Navigate to the child folder
   // Add to breadcrumb
+  folderStore.addBreadcrumb(props)
+  router.push(`/storage/${props.directoryId}`)
 }
 
 const onCtrlClick = () => {

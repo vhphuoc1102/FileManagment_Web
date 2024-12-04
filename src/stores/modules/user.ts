@@ -1,8 +1,9 @@
 import { defineStore } from 'pinia'
 import { store } from '@/stores'
+import type { UserInfo } from '@/apis/auth/types'
 
 interface UserState {
-  email?: string;
+  userInfo?: UserInfo;
   tokenKey: string;
   token?: string;
 }
@@ -10,14 +11,14 @@ interface UserState {
 export const useUserStore = defineStore('user', {
   state: (): UserState => {
     return {
-      email: undefined,
+      userInfo: undefined,
       tokenKey: 'Bearer ',
       token: undefined
     }
   },
   getters: {
-    getEmail(): string | undefined {
-      return this.email;
+    getUserInfo(): UserInfo | undefined {
+      return this.userInfo;
     },
     getTokenKey(): string {
       return this.tokenKey;
@@ -27,20 +28,17 @@ export const useUserStore = defineStore('user', {
     }
   },
   actions: {
-    setEmail(email: string) {
-      this.email = email;
+    setUserInfo(userInfo: UserInfo) {
+      this.userInfo = userInfo
     },
     setToken(token: string) {
       this.token = token;
     },
     logoutConfirm() {
-
     },
     reset() {
-
     },
     logout() {
-
     }
   }
 })

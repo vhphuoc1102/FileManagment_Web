@@ -2,8 +2,14 @@ import type { AlbumInfo } from '@/types/album'
 import { defineStore } from 'pinia'
 import { store } from '@/stores'
 
+export interface AlbumFileWithStatus {
+  albumInfo: AlbumInfo
+  activated: boolean
+}
+
 interface AlBumState {
-  activatedAlbums: Array<number>
+  activatedAlbums: Array<number>,
+  albumFiles: Array<AlbumFileWithStatus>,
   breadcrumbs: Array<AlbumInfo>
 }
 
@@ -11,6 +17,7 @@ export const useAlbumStore = defineStore('album', {
   state: (): AlBumState => {
     return {
       activatedAlbums: [],
+      albumFiles: [],
       breadcrumbs: []
     }
   },
@@ -20,6 +27,9 @@ export const useAlbumStore = defineStore('album', {
     },
     getBreadcrumbs(): Array<AlbumInfo> {
       return this.breadcrumbs
+    },
+    getAlbumFiles(): Array<AlbumFileWithStatus> {
+      return this.albumFiles
     }
   },
   actions: {
@@ -34,6 +44,9 @@ export const useAlbumStore = defineStore('album', {
     },
     clearActivatedAlbums(): void {
       this.activatedAlbums = []
+    },
+    clearActivatedAlbumFiles(): void {
+      this.getAlbumFiles.forEach(file => file.activated = false)
     },
     setBreadcrumbs(breadcrumbs: Array<AlbumInfo>): void {
       this.breadcrumbs = breadcrumbs

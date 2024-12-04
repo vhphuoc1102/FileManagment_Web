@@ -17,14 +17,32 @@
 import { useAlbumStoreWithOut } from '@/stores/modules/album'
 import { computed } from 'vue'
 
+// Props
+const props = defineProps({
+  type: {
+    type: String,
+    default: 'album'
+  }
+});
 // Stores
 const albumStore = useAlbumStoreWithOut()
 
 // Variables
-const selectedItemsCount = computed(() => albumStore.getActivatedAlbums.length)
+const selectedItemsCount = computed(() => {
+  if (props.type === 'album') {
+    return albumStore.getActivatedAlbums.length
+  }
+  else {
+    return albumStore.getAlbumFiles.filter((file) => file.activated).length
+  }
+})
 
 const onClose = () => {
-  albumStore.clearActivatedAlbums()
+  if (props.type === 'album') {
+    albumStore.clearActivatedAlbums()
+  } else {
+    albumStore.clearActivatedAlbumFiles()
+  }
 }
 </script>
 

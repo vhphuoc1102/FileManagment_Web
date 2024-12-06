@@ -6,12 +6,7 @@ import PlainLayout from '@/layouts/plain/PlainLayout.vue'
 const routes: AppRouteRecordRaw[] = [
   {
     path: '/',
-    name: 'Main',
-    component: () => import('@/views/MainPage.vue'),
-    meta: {
-      title: 'Main',
-      layout: MainLayout
-    }
+    redirect: '/home'
   },
   {
     path: '/login',
@@ -81,6 +76,11 @@ const routes: AppRouteRecordRaw[] = [
       title: 'Album',
       layout: MainLayout
     }
+  },
+  {
+    path: '/404',
+    name: 'NotFound',
+    component: () => import('@/views/error/404Page.vue')
   }
 ]
 const router = createRouter({

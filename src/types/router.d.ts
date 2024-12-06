@@ -11,7 +11,7 @@ declare module 'vue-router' {}
 
 declare global {
   declare interface AppRouteRecordRaw extends Omit<RouteRecordRaw, 'meta' | 'children'> {
-    name: string
+    name?: string
     meta?: RouteMetaCustom
     component?: Component | string
     children?: AppRouteRecordRaw[]

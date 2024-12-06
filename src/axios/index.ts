@@ -21,22 +21,16 @@ const request = (option: AxiosConfig) => {
 }
 
 export default {
-  get: <T = any>(option: AxiosConfig) => {
-    return request({ method: 'get', ...option }) as Promise<IResponse<T>>
+  get: <T>(option: AxiosConfig) => {
+    return request({ method: 'get', ...option }) as Promise<T>
   },
-  post: <T = any>(option: AxiosConfig) => {
-    return request({ method: 'post', ...option }) as Promise<IResponse<T>>
+  post: <T>(option: AxiosConfig) => {
+    return request({ method: 'post', ...option }) as Promise<T>
   },
-  delete: <T = any>(option: AxiosConfig) => {
-    return request({ method: 'delete', ...option }) as Promise<IResponse<T>>
+  delete: <T>(option: AxiosConfig) => {
+    return request({ method: 'delete', ...option }) as Promise<T>
   },
-  put: <T = any>(option: AxiosConfig) => {
-    return request({ method: 'put', ...option }) as Promise<IResponse<T>>
-  },
-  cancelRequest: (url: string | string[]) => {
-    return service.cancelRequest(url)
-  },
-  cancelAllRequest: () => {
-    return service.cancelAllRequest()
+  put: <T>(option: AxiosConfig) => {
+    return request({ method: 'put', ...option }) as Promise<T>
   }
 }

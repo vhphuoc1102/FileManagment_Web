@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, unref } from 'vue'
 import { z } from 'zod'
 import { useToast } from 'primevue/usetoast'
 import { zodResolver } from '@primevue/forms/resolvers/zod'
+import { loginApi } from '@/apis/auth'
+import type { AuthRequest } from '@/apis/auth/request'
 
 const toast = useToast();
 
-const formData = ref({
+const formData = ref<AuthRequest>({
   email: '',
   password: ''
 });
@@ -18,7 +20,12 @@ const resolver =  zodResolver(
   })
 );
 
-const onSubmit = async () => {}
+const onSubmit = async (e: any) => {
+  if(e.valid) {
+    l
+    await loginApi(unref(formData))
+  }
+}
 
 const onGoogleLogin = async () => {}
 </script>

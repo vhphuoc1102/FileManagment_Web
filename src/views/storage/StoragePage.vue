@@ -42,7 +42,7 @@ import { vOnClickOutside } from '@vueuse/components'
 import { useRoute } from 'vue-router'
 
 // Stores
-const pageLoadingHook = usePageLoading()
+const {loadStart, loadDone} = usePageLoading()
 const folderStore = useFolderStoreWithOut()
 const fileStore = useFileStoreWithOut()
 
@@ -55,7 +55,7 @@ const { params } = useRoute()
 
 // Event
 onMounted(() => {
-  pageLoadingHook.loadingStart()
+  loadStart()
   folderInfos.value = [
     {
       name: '1',
@@ -66,7 +66,7 @@ onMounted(() => {
       directoryId: 2
     }
   ]
-  pageLoadingHook.loadingDone()
+  loadDone()
 })
 
 // Methods

@@ -4,11 +4,11 @@
     <AlbumUtilityBar ref="ignoreRef" class="mx-6 mb-4" />
     <div class="px-[1.125rem]">
       <div class="flex flex-wrap gap-3 px-3">
-        <div>
+        <div v-if="isAlbumPage">
           <AlbumItem v-for="(album, index) in albumInfos" :key="index" v-on-click-outside="onClickOutsideHandler"
                      :album-id="album.albumId" :name="album.name" />
         </div>
-        <div>
+        <div v-else>
           <AlbumFileWrapper file=""/>
         </div>
       </div>
@@ -26,13 +26,17 @@ import { useAlbumStore } from '@/stores/modules/album'
 import { vOnClickOutside } from '@vueuse/components'
 import AlbumFileWrapper from '@/views/album/components/AlbumFileWrapper.vue'
 import { useRoute } from 'vue-router'
-
 // Stores
 const albumStore = useAlbumStore()
+const route = useRoute()
+
+// Constants
+const { path } = route
 
 // Variables
 const albumInfos = ref<AlbumInfo[]>([])
 const ignoreRef = ref()
+const isAlbumPage = ref<boolean>(path === '/album' || path.startsWith('/album')) // Album page or album file page
 
 // Event
 onMounted(() => {

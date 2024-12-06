@@ -1,18 +1,18 @@
 import { useAppStoreWithOut } from '@/stores/modules/app'
 
 export const usePageLoading = () => {
-  const loadingStart = () => {
+  const loadStart = () : void => {
     const appStore = useAppStoreWithOut()
     appStore.setPageLoading(true)
   }
 
-  const loadingDone = () => {
+  const loadDone = () : void => {
     const appStore = useAppStoreWithOut()
     appStore.setPageLoading(false)
   }
 
   return {
-    loadingStart,
-    loadingDone
+    loadStart,
+    loadDone
   }
 }

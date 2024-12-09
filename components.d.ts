@@ -19,6 +19,7 @@ declare module 'vue' {
     Breadcrumb: typeof import('primevue/breadcrumb')['default']
     Button: typeof import('primevue/button')['default']
     Checkbox: typeof import('primevue/checkbox')['default']
+    ConfirmDialog: typeof import('primevue/confirmdialog')['default']
     ContextMenu: typeof import('primevue/contextmenu')['default']
     Dialog: typeof import('primevue/dialog')['default']
     Divider: typeof import('primevue/divider')['default']

@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { store } from '@/stores'
 import type { UserInfo } from '@/apis/auth/types'
+import router from '@/router'
 
 interface UserState {
   userInfo?: UserInfo;
@@ -18,13 +19,13 @@ export const useUserStore = defineStore('user', {
   },
   getters: {
     getUserInfo(): UserInfo | undefined {
-      return this.userInfo;
+      return this.userInfo
     },
     getTokenKey(): string {
-      return this.tokenKey;
+      return this.tokenKey
     },
-    getToken(): string| undefined {
-      return this.token;
+    getToken(): string | undefined {
+      return this.token
     }
   },
   actions: {
@@ -32,17 +33,19 @@ export const useUserStore = defineStore('user', {
       this.userInfo = userInfo
     },
     setToken(token: string) {
-      this.token = token;
-    },
-    logoutConfirm() {
+      this.token = token
     },
     reset() {
+      this.userInfo = undefined
+      this.token = undefined
+      router.replace('/login')
     },
     logout() {
+      this.reset()
     }
   }
 })
 
 export const useUserStoreWithOut = () => {
-  return useUserStore(store);
+  return useUserStore(store)
 }

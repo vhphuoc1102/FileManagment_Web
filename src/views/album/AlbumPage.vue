@@ -1,15 +1,15 @@
 <template>
   <div class="flex flex-col gap-2 pr-4">
-    <AlbumBreadCrumb class="ml-4" type="album"/>
+    <AlbumBreadCrumb class="ml-4" type="album" />
     <AlbumUtilityBar ref="ignoreRef" class="mx-6 mb-4" />
     <div class="px-[1.125rem]">
-      <div class="flex flex-wrap gap-3 px-3">
-        <div v-if="isAlbumPage">
+      <div>
+        <div v-if="isAlbumPage" class="flex flex-wrap gap-3 px-3">
           <AlbumItem v-for="(album, index) in albumInfos" :key="index" v-on-click-outside="onClickOutsideHandler"
                      :album-id="album.albumId" :name="album.name" />
         </div>
-        <div v-else>
-          <AlbumFileWrapper file=""/>
+        <div v-else class="flex flex-wrap gap-3 px-3">
+          <AlbumFileWrapper file="" />
         </div>
       </div>
     </div>

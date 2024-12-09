@@ -1,48 +1,53 @@
-<script setup lang="ts">
-import { ref, unref } from 'vue'
+<script lang="ts" setup>
+import { ref } from 'vue'
 import { z } from 'zod'
-import { useToast } from 'primevue/usetoast'
 import { zodResolver } from '@primevue/forms/resolvers/zod'
 import { loginApi } from '@/apis/auth'
 import type { AuthRequest } from '@/apis/auth/request'
-
-const toast = useToast();
+import router from '@/router'
 
 const formData = ref<AuthRequest>({
   email: '',
   password: ''
-});
+})
 
-const resolver =  zodResolver(
+const resolver = zodResolver(
   z.object({
     email: z.string().min(1, { message: 'Email is required.' }),
     password: z.string().min(1, { message: 'Password is required.' })
   })
-);
+)
 
 const onSubmit = async (e: any) => {
-  if(e.valid) {
-    l
-    await loginApi(unref(formData))
+  if (e.valid) {
+    await loginApi(e.values)
   }
 }
 
-const onGoogleLogin = async () => {}
+const onGoogleLogin = async () => {
+}
+
+const onRegister = () => {
+  router.replace('/signup')
+}
 </script>
 
 <template>
   <div class="flex min-h-screen justify-center items-center">
-    <Toast />
-    <Form v-slot="$form" :resolver :formData @submit="onSubmit" class="flex flex-col gap-5 w-full sm:w-96 border px-8 pt-4 pb-5 rounded-xl shadow">
+    <Form v-slot="$form" :initialValues="formData" :resolver
+          class="flex flex-col gap-5 w-full sm:w-96 border px-8 pt-4 pb-5 rounded-xl shadow"
+          @submit="onSubmit">
       <div class="flex w-full justify-center">
         <span class="text-2xl font-semibold">Login</span>
       </div>
       <div class="flex flex-col gap-1">
-        <InputText name="email" type="text" placeholder="Email" fluid />
-        <Message v-if="$form.email?.invalid" severity="error" size="small" variant="simple">{{ $form.email.error.message }}</Message>
+        <InputText fluid name="email" placeholder="Email" type="text" />
+        <Message v-if="$form.email?.invalid" severity="error" size="small" variant="simple">{{ $form.email.error.message
+          }}
+        </Message>
       </div>
       <div class="flex flex-col gap-1">
-        <Password name="password" placeholder="Password" :feedback="false" toggleMask fluid />
+        <Password :feedback="false" fluid name="password" placeholder="Password" toggleMask />
         <Message v-if="$form.password?.invalid" severity="error" size="small" variant="simple">
           <ul class="my-0 px-4 flex flex-col gap-1">
             <li v-for="(error, index) of $form.password.errors" :key="index">{{ error.message }}</li>
@@ -50,15 +55,15 @@ const onGoogleLogin = async () => {}
         </Message>
       </div>
       <div class="flex flex-col gap-3">
-        <Button type="submit" severity="secondary" label="Login"/>
+        <Button label="Login" severity="secondary" type="submit" />
         <span class="text-sm font-semibold cursor-pointer">Forget password ?</span>
       </div>
-      <Divider align="center" type="solid" :pt:root:class="'my-0'">
+      <Divider :pt:root:class="'my-0'" align="center" type="solid">
         <p>Or</p>
       </Divider>
-      <Button label="Login with google" @click="onGoogleLogin" icon="pi pi-google"/>
+      <Button icon="pi pi-google" label="Login with google" @click="onGoogleLogin" />
       <div class="text-sm font-medium">
-        Don't have an account ? <span class="text-sm font-semibold cursor-pointer"> Register </span>
+        Don't have an account ? <span class="text-sm font-semibold cursor-pointer" @click="onRegister"> Register </span>
       </div>
     </Form>
   </div>

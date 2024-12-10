@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { z } from 'zod'
 import { zodResolver } from '@primevue/forms/resolvers/zod'
 import router from '@/router'
+import { registerApi } from '@/apis/auth'
 
 const formData = ref({
   email: '',
@@ -15,7 +16,10 @@ const resolver = zodResolver(
   })
 )
 
-const onSubmit = async () => {
+const onSubmit = async (e: any) => {
+  if (e.valid) {
+    await registerApi(e.values)
+  }
 }
 
 const onGoogleLogin = async () => {

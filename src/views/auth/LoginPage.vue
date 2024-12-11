@@ -5,6 +5,9 @@ import { zodResolver } from '@primevue/forms/resolvers/zod'
 import { loginApi } from '@/apis/auth'
 import type { AuthRequest } from '@/apis/auth/request'
 import router from '@/router'
+import { useUserStoreWithOut } from '@/stores/modules/user'
+
+const userStore = useUserStoreWithOut()
 
 const formData = ref<AuthRequest>({
   email: '',
@@ -20,7 +23,11 @@ const resolver = zodResolver(
 
 const onSubmit = async (e: any) => {
   if (e.valid) {
-    await loginApi(e.values)
+    const res = await loginApi(e.values)
+    if (res) {
+      userStore.setUserState({ email: e.values.email }, res.accessToken)
+      router.push('/')
+    }
   }
 }
 

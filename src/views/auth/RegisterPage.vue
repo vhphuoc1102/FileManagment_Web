@@ -9,6 +9,7 @@ const formData = ref({
   email: '',
   password: ''
 })
+
 const resolver = zodResolver(
   z.object({
     email: z.string().min(1, { message: 'Email is required.' }),

@@ -4,6 +4,7 @@ import { z } from 'zod'
 import { zodResolver } from '@primevue/forms/resolvers/zod'
 import router from '@/router'
 import { registerApi } from '@/apis/auth'
+import * as toast from '@/composables/toast'
 
 const formData = ref({
   email: '',
@@ -19,7 +20,12 @@ const resolver = zodResolver(
 
 const onSubmit = async (e: any) => {
   if (e.valid) {
-    await registerApi(e.values)
+    await registerApi(e.values).then(
+      () => {
+        toast.info('Register success', '')
+        router.push('/login')
+      }
+    )
   }
 }
 

@@ -5,14 +5,16 @@ import type { FolderInfo } from '@/types/file'
 
 interface FolderState {
   activatedFolders: Array<number>
-  breadcrumbs: Array<FolderInfo>
+  breadcrumbs: Array<FolderInfo>,
+  parentDirectoryId?: number
 }
 
 export const useFolderStore = defineStore('folder', {
   state: (): FolderState => {
     return {
       activatedFolders: [],
-      breadcrumbs: []
+      breadcrumbs: [],
+      parentDirectoryId: undefined
     }
   },
   getters: {
@@ -21,6 +23,9 @@ export const useFolderStore = defineStore('folder', {
     },
     getBreadcrumbs(): Array<FolderInfo> {
       return this.breadcrumbs
+    },
+    getParentDirectoryId(): number | undefined {
+      return this.parentDirectoryId
     }
   },
   actions: {
@@ -41,6 +46,9 @@ export const useFolderStore = defineStore('folder', {
     },
     addBreadcrumb(breadcrumb: FolderInfo): void {
       this.breadcrumbs.push(breadcrumb)
+    },
+    setParentDirectoryId(parentDirectoryId: number): void {
+      this.parentDirectoryId = parentDirectoryId
     }
   }
 })

@@ -4,10 +4,10 @@ import type { Component } from 'vue'
 interface RouteMetaCustom extends Record<string | number | symbol, unknown> {
   title?: string
   permission?: string
-  layout?: Component
 }
 
-declare module 'vue-router' {}
+declare module 'vue-router' {
+}
 
 declare global {
   declare interface AppRouteRecordRaw extends Omit<RouteRecordRaw, 'meta' | 'children'> {

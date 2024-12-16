@@ -6,26 +6,27 @@ interface SettingState {
 }
 
 export const useSettingStore = defineStore('setting', {
-  state: () : SettingState => {
+  state: (): SettingState => {
     return {
-      sideBarVisible: true,
+      sideBarVisible: true
     }
   },
   getters: {
     getSideBarVisible(): boolean {
-      return this.sideBarVisible;
+      return this.sideBarVisible
     }
   },
   actions: {
     setSideBarVisible(visible: boolean): void {
-      this.sideBarVisible = visible;
+      this.sideBarVisible = visible
     },
     toggleSideBarVisible(): void {
-      this.sideBarVisible = !this.sideBarVisible;
+      this.sideBarVisible = !this.sideBarVisible
     }
-  }
+  },
+  persist: true
 })
 
 export const useSettingStoreWithOut = () => {
-  return useSettingStore(store);
+  return useSettingStore(store)
 }

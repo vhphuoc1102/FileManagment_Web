@@ -1,11 +1,12 @@
 import axios, { AxiosError } from 'axios'
 import { defaultRequestInterceptors, defaultResponseInterceptors } from './config'
 import * as toast from '@/composables/toast'
-import type { AxiosInstance, AxiosResponse, RequestConfig } from './types'
+import type { AxiosInstance, AxiosResponse, CommonError, RequestConfig } from './types'
 import { REQUEST_TIMEOUT } from '@/constants'
+import { useUserStoreWithOut } from '@/stores/modules/user'
 
 export const PATH_URL = import.meta.env.VITE_API_BASE_PATH
-
+const UNKNOWN_ERROR = 'Unknown error'
 const abortControllerMap: Map<string, AbortController> = new Map()
 
 const axiosInstance: AxiosInstance = axios.create({
@@ -19,9 +20,13 @@ axiosInstance.interceptors.response.use(
     abortControllerMap.delete(url)
     return res
   },
-  (error: AxiosError) => {
+  (error: AxiosError<CommonError>) => {
     console.log('err： ' + error) // for debug
-    toast.error('Error', error.message)
+    toast.error('Error', error?.response?.data?.message || UNKNOWN_ERROR)
+    if (error?.response?.status === 401) {
+      const userStore = useUserStoreWithOut()
+      userStore.logout()
+    }
     return Promise.reject(error)
   }
 )

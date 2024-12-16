@@ -8,11 +8,16 @@ declare global {
     | 'application/x-www-form-urlencoded'
     | 'multipart/form-data'
     | 'text/plain'
+
   declare interface ImportMetaEnv {
     readonly VITE_API_BASE_PATH: string
     readonly VITE_BASE_PATH: string
     readonly VITE_NODE_ENV: string
   }
+
+  declare type AxiosMethod = 'get' | 'post' | 'delete' | 'put'
+  declare type AxiosResponseType = 'arraybuffer' | 'blob' | 'document' | 'json' | 'text' | 'stream'
+
   declare interface AxiosConfig {
     params?: any
     data?: any
@@ -21,6 +26,7 @@ declare global {
     headers?: RawAxiosRequestHeaders
     responseType?: AxiosResponseType
   }
+
   declare interface IResponse<T = any> {
     code: number
     data: T extends any ? T : T & any

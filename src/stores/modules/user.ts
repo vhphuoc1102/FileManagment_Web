@@ -13,7 +13,7 @@ export const useUserStore = defineStore('user', {
   state: (): UserState => {
     return {
       userInfo: undefined,
-      tokenKey: 'Bearer ',
+      tokenKey: 'Authorization',
       token: undefined
     }
   },
@@ -47,7 +47,8 @@ export const useUserStore = defineStore('user', {
     logout() {
       this.reset()
     }
-  }
+  },
+  persist: true
 })
 
 export const useUserStoreWithOut = () => {

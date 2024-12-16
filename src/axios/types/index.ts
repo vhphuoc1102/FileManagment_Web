@@ -20,6 +20,15 @@ interface RequestConfig<T = AxiosResponse> extends AxiosRequestConfig {
   interceptors?: RequestInterceptors<T>
 }
 
+interface CommonError {
+  code: string,
+  debug: string,
+  httpStatus: number,
+  message: string,
+  module: string,
+  timestamp: string
+}
+
 export type {
   AxiosResponse,
   RequestInterceptors,
@@ -27,5 +36,6 @@ export type {
   AxiosInstance,
   InternalAxiosRequestConfig,
   AxiosRequestHeaders,
-  AxiosError
+  AxiosError,
+  CommonError
 }

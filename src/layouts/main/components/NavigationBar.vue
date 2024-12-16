@@ -5,7 +5,10 @@
     }
   }">
     <template #start>
-      <Button icon="pi pi-bars" @click="toggleVisible" />
+      <span v-if="props.layout === 'User'" class="flex items-center gap-1 px-2 justify-center cursor-pointer">
+        <span class="text-2xl font-semibold">Image <span class="text-primary">Storage</span></span>
+      </span>
+      <Button v-else icon="pi pi-bars" @click="toggleVisible" />
     </template>
     <template #center>
       <IconField>
@@ -37,6 +40,12 @@ const confirm = useConfirm()
 
 const settingStore = useSettingStoreWithOut()
 const userStore = useUserStoreWithOut()
+const props = defineProps({
+  layout: {
+    type: String,
+    required: false
+  }
+})
 
 const avatarMenu = ref()
 const avatarKeys = {

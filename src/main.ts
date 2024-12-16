@@ -11,6 +11,7 @@ import ConfirmationService from 'primevue/confirmationservice'
 
 const setupAll = async () => {
   const app = createApp(App)
+  setupStore(app)
   setupRouter(app)
   app.use(PrimeVue, {
     theme: 'none',
@@ -18,7 +19,6 @@ const setupAll = async () => {
   })
   app.use(ToastService)
   app.use(ConfirmationService)
-  setupStore(app)
   app.mount('#app')
 }
 

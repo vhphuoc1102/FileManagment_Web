@@ -4,7 +4,7 @@
     <div class="grow">
       <NavigationBar />
       <ProgressBar v-if="pageLoading" class="rounded-none" mode="indeterminate" style="height: 6px" />
-      <slot />
+      <RouterView :key="$route.path" />
     </div>
   </div>
 </template>

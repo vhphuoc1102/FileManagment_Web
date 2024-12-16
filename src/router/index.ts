@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 import type { App } from 'vue'
 import MainLayout from '@/layouts/main/MainLayout.vue'
-import PlainLayout from '@/layouts/plain/PlainLayout.vue'
+import UserLayout from '@/layouts/user/UserLayout.vue'
 
 const routes: AppRouteRecordRaw[] = [
   {
@@ -10,11 +10,9 @@ const routes: AppRouteRecordRaw[] = [
   },
   {
     path: '/login',
-    name: 'Login',
     component: () => import('@/views/auth/LoginPage.vue'),
     meta: {
-      title: 'Login',
-      layout: PlainLayout
+      title: 'Login'
     }
   },
   {
@@ -22,16 +20,15 @@ const routes: AppRouteRecordRaw[] = [
     name: 'Signup',
     component: () => import('@/views/auth/RegisterPage.vue'),
     meta: {
-      title: 'Signup',
-      layout: PlainLayout
+      title: 'Signup'
     }
   },
   {
     path: '/storage',
     name: 'Storage',
+    component: MainLayout,
     meta: {
-      title: 'Storage',
-      layout: MainLayout
+      title: 'Storage'
     },
     children: [
       {
@@ -42,45 +39,86 @@ const routes: AppRouteRecordRaw[] = [
       {
         path: ':id',
         name: 'Child',
-        component: () => import('@/views/storage/StoragePage.vue'),
-        meta: {
-          title: 'Storage',
-          layout: MainLayout
-        }
+        component: () => import('@/views/storage/StoragePage.vue')
       }
     ]
   },
   {
     path: '/location',
     name: 'Location',
-    component: () => import('@/views/location/LocationPage.vue'),
+    component: MainLayout,
     meta: {
-      title: 'Location',
-      layout: MainLayout
-    }
+      title: 'Location'
+    }, children: [
+      {
+        path: '',
+        component: () => import('@/views/location/LocationPage.vue')
+      }
+    ]
   },
   {
     path: '/home',
     name: 'Home',
-    component: () => import('@/views/home/HomePage.vue'),
+    component: MainLayout,
     meta: {
-      title: 'Home',
-      layout: MainLayout
-    }
+      title: 'Home'
+    },
+    children: [
+      {
+        path: '',
+        component: () => import('@/views/home/HomePage.vue')
+      }
+    ]
   },
   {
     path: '/album',
     name: 'Album',
-    component: () => import('@/views/album/AlbumPage.vue'),
+    component: MainLayout,
     meta: {
-      title: 'Album',
-      layout: MainLayout
-    }
+      title: 'Album'
+    },
+    children: [
+      {
+        path: '',
+        component: () => import('@/views/album/AlbumPage.vue')
+      }
+    ]
+  },
+  {
+    path: '/shared',
+    name: 'SharedWithMe',
+    component: MainLayout,
+    meta: {
+      title: 'Shared With Me'
+    },
+    children: [
+      {
+        path: '/shared-with-me',
+        name: 'Shared with me',
+        component: () => import('@/views/shared/SharedWithMePage.vue')
+      },
+      {
+        path: '/sharing',
+        name: 'Sharing',
+        component: () => import('@/views/shared/SharingPage.vue')
+      }
+    ]
   },
   {
     path: '/404',
-    name: 'NotFound',
+    name: 'Not Found',
     component: () => import('@/views/error/404Page.vue')
+  },
+  {
+    path: '/user',
+    component: UserLayout,
+    children: [
+      {
+        path: '',
+        name: 'User Info',
+        component: () => import('@/views/user/UserInfoPage.vue')
+      }
+    ]
   }
 ]
 const router = createRouter({

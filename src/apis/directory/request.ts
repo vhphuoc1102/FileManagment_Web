@@ -1,5 +1,5 @@
 export interface AddDirectoryRequest {
-  parentDirectoryId: number,
+  parentDirectoryId: number | undefined,
   name: string
 }
 

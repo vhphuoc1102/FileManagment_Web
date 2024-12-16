@@ -7,7 +7,7 @@
           }" modal>
     <IftaLabel>
       <label class="font-semibold" for="folder">Folder name</label>
-      <InputText id="folder" autocomplete="off" class="flex-auto w-96" />
+      <InputText id="folder" v-model="name" autocomplete="off" class="flex-auto w-96" />
     </IftaLabel>
     <div class="flex justify-end gap-2">
       <Button label="Cancel" severity="secondary" type="button" @click="close"></Button>
@@ -18,7 +18,13 @@
 
 <script lang="ts" setup>
 import type { FolderInfo } from '@/types/file'
-import { computed } from 'vue'
+import { computed, onMounted, ref, unref } from 'vue'
+import * as directoryApi from '@/apis/directory'
+import { useFolderStoreWithOut } from '@/stores/modules/folder'
+import { usePageLoading } from '@/hooks/web/usePageLoading'
+
+const folderStore = useFolderStoreWithOut()
+const { loadStart, loadDone } = usePageLoading()
 
 const props = withDefaults(defineProps<{
   folderInfo: FolderInfo
@@ -36,6 +42,7 @@ const HEADER = {
   UPDATE: 'Update Folder'
 }
 
+const name = ref<string>('')
 const visible = defineModel<boolean | undefined>()
 const header = computed(() => {
   if (!props.folderInfo || props.folderInfo.directoryId == -1) {
@@ -45,12 +52,33 @@ const header = computed(() => {
   }
 })
 
+onMounted(() => {
+  if (props.folderInfo) {
+    name.value = props.folderInfo.name
+  }
+})
+
 const close = () => {
   visible.value = false
 }
-const onSave = () => {
-  // TODO: Call API
-  close()
+const onSave = async () => {
+  try {
+    loadStart()
+    let result
+    if (!props.folderInfo || props.folderInfo.directoryId == -1) {
+      result = await directoryApi.addDirectory({
+        name: unref(name),
+        parentDirectoryId: folderStore.getParentDirectoryId
+      })
+    } else {
+      result = await directoryApi.updateDirectory(props.folderInfo.directoryId, unref(name))
+    }
+    if (result) {
+      close()
+    }
+  } finally {
+    loadDone()
+  }
 }
 </script>
 

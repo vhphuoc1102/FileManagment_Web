@@ -2,7 +2,7 @@
   <Dialog v-model:visible="visible" :blockScroll="true" :closable="false" :dismissableMask="true" :draggable="false"
           :pt="{
       root: {
-        class: 'w-[30rem]'
+        class: 'w-[66rem]'
       },
       content: {
         class: 'flex flex-col gap-4'
@@ -79,13 +79,17 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, unref } from 'vue'
 import { usePrimeVue } from 'primevue/config'
 import { useToast } from 'primevue/usetoast'
 import type { FileUploadSelectEvent } from 'primevue/fileupload'
+import * as fileApi from '@/apis/file'
+import { CHUNK_SIZE } from '@/constants'
+import { useFolderStoreWithOut } from '@/stores/modules/folder'
 
 const primevue = usePrimeVue()
 const toast = useToast()
+const folderStore = useFolderStoreWithOut()
 
 const totalSize = ref(0)
 const totalSizePercent = ref(0)
@@ -132,9 +136,26 @@ const formatSize = (bytes: number) => {
 const close = () => {
   visible.value = false
 }
-const onSave = () => {
-  // TODO: Call API
-  close()
+const onSave = async () => {
+  for (const file of unref(files)) {
+    const timestamp = new Date().getTime()
+    const totalChunks = Math.ceil(file.size / CHUNK_SIZE)
+    let index = 0
+    while (index < totalChunks) {
+      const chunk = file.slice(index * CHUNK_SIZE, (index + 1) * CHUNK_SIZE)
+      const request: Recordable = {
+        file: chunk,
+        fileName: file.name,
+        timestamp: timestamp,
+        index: index,
+        total: totalChunks,
+        directoryId: folderStore.getParentDirectoryId ?? -1
+      }
+      await fileApi.uploadFile(request)
+      index++
+    }
+  }
+  // close()
 }
 </script>
 

@@ -1,15 +1,15 @@
 import router from '@/router'
 import { usePageLoading } from '@/hooks/web/usePageLoading'
-import { useUserStore, useUserStoreWithOut } from '@/stores/modules/user'
+import { useUserStoreWithOut } from '@/stores/modules/user'
 
 const { loadStart, loadDone } = usePageLoading()
-const NO_REDIRECT_WHITE_LIST = ['/login']
+const NO_REDIRECT_WHITE_LIST = ['/login', '/signup']
 
 router.beforeEach(async (to, from, next) => {
   loadStart()
-  const userStore = useUserStore()
+  const userStore = useUserStoreWithOut()
   if (userStore.getUserInfo) {
-    if (to.path === '/login') {
+    if (to.path === '/login' || to.path === '/signup') {
       next({ path: '/' })
     } else {
       const redirectPath = from.query.redirect

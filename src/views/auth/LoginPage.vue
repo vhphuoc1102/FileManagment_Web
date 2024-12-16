@@ -6,6 +6,7 @@ import { loginApi } from '@/apis/auth'
 import type { AuthRequest } from '@/apis/auth/request'
 import router from '@/router'
 import { useUserStoreWithOut } from '@/stores/modules/user'
+import * as toast from '@/composables/toast'
 
 const userStore = useUserStoreWithOut()
 
@@ -25,8 +26,9 @@ const onSubmit = async (e: any) => {
   if (e.valid) {
     const res = await loginApi(e.values)
     if (res) {
+      toast.info('Login success', '')
       userStore.setUserState({ email: e.values.email }, res.accessToken)
-      router.push('/')
+      await router.push('/')
     }
   }
 }
@@ -34,8 +36,8 @@ const onSubmit = async (e: any) => {
 const onGoogleLogin = async () => {
 }
 
-const onRegister = () => {
-  router.replace('/signup')
+const onRegister = async () => {
+  await router.replace('/signup')
 }
 </script>
 

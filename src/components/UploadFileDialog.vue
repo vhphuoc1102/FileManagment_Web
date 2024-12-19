@@ -86,7 +86,10 @@ import type { FileUploadSelectEvent } from 'primevue/fileupload'
 import * as fileApi from '@/apis/file'
 import { CHUNK_SIZE } from '@/constants'
 import { useFolderStoreWithOut } from '@/stores/modules/folder'
+import { v4 as uuid } from 'uuid'
+import { usePageLoading } from '@/hooks/web/usePageLoading'
 
+const { loadStart, loadDone } = usePageLoading()
 const primevue = usePrimeVue()
 const toast = useToast()
 const folderStore = useFolderStoreWithOut()
@@ -136,26 +139,37 @@ const formatSize = (bytes: number) => {
 const close = () => {
   visible.value = false
 }
+
 const onSave = async () => {
-  for (const file of unref(files)) {
-    const timestamp = new Date().getTime()
-    const totalChunks = Math.ceil(file.size / CHUNK_SIZE)
-    let index = 0
-    while (index < totalChunks) {
-      const chunk = file.slice(index * CHUNK_SIZE, (index + 1) * CHUNK_SIZE)
-      const request: Recordable = {
-        file: chunk,
-        fileName: file.name,
-        timestamp: timestamp,
-        index: index,
-        total: totalChunks,
-        directoryId: folderStore.getParentDirectoryId ?? -1
+  try {
+    loadStart()
+    for (const file of unref(files)) {
+      const UUID = uuid()
+      const totalChunks = Math.ceil(file.size / CHUNK_SIZE)
+      let index = 0
+      while (index < totalChunks) {
+        const chunk = file.slice(index * CHUNK_SIZE, (index + 1) * CHUNK_SIZE)
+        const request: Recordable = {
+          file: chunk,
+          fileName: file.name,
+          UUID: UUID,
+          index: index,
+          total: totalChunks,
+          directoryId: folderStore.getParentDirectoryId ?? -1
+        }
+        await fileApi.uploadFile(request)
+        index++
       }
-      await fileApi.uploadFile(request)
-      index++
     }
+    toast.add({ severity: 'success', summary: 'Success', detail: 'Upload success', life: 3000 })
+    onReload()
+  } finally {
+    loadDone()
   }
-  // close()
+  close()
+}
+const onReload = () => {
+  window.location.reload()
 }
 </script>
 

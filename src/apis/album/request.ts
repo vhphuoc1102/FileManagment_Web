@@ -1,9 +1,9 @@
 export interface CreateAlbumRequest {
- name: string;
+  name: string;
 
- description: string;
+  description: string;
 
- fileIds: Set<number>;
+  fileIds?: Set<number>;
 }
 
 export interface UpdateAlbumRequest {

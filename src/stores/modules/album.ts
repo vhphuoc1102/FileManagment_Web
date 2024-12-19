@@ -1,6 +1,7 @@
 import type { AlbumInfo } from '@/types/album'
 import { defineStore } from 'pinia'
 import { store } from '@/stores'
+import type { GetAlbumsResponse } from '@/apis/album/response'
 
 export interface AlbumFileWithStatus {
   albumInfo: AlbumInfo
@@ -10,7 +11,8 @@ export interface AlbumFileWithStatus {
 interface AlBumState {
   activatedAlbums: Array<number>,
   albumFiles: Array<AlbumFileWithStatus>,
-  breadcrumbs: Array<AlbumInfo>
+  breadcrumbs: Array<AlbumInfo>,
+  albums: GetAlbumsResponse,
 }
 
 export const useAlbumStore = defineStore('album', {
@@ -18,7 +20,10 @@ export const useAlbumStore = defineStore('album', {
     return {
       activatedAlbums: [],
       albumFiles: [],
-      breadcrumbs: []
+      breadcrumbs: [],
+      albums: {
+        albums: new Map()
+      }
     }
   },
   getters: {
@@ -30,6 +35,9 @@ export const useAlbumStore = defineStore('album', {
     },
     getAlbumFiles(): Array<AlbumFileWithStatus> {
       return this.albumFiles
+    },
+    getAlbums(): GetAlbumsResponse {
+      return this.albums
     }
   },
   actions: {
@@ -53,6 +61,9 @@ export const useAlbumStore = defineStore('album', {
     },
     addBreadcrumb(breadcrumb: AlbumInfo): void {
       this.breadcrumbs.push(breadcrumb)
+    },
+    setAlbums(albums: GetAlbumsResponse): void {
+      this.albums = albums
     }
   }
 })

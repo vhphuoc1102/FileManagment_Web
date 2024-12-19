@@ -1,4 +1,5 @@
 export interface FilterParams {
   page: number,
-  limit: number
+  limit?: number,
+  unlimited?: boolean
 }

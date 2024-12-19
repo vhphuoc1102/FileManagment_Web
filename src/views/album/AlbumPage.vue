@@ -26,6 +26,8 @@ import { useAlbumStore } from '@/stores/modules/album'
 import { vOnClickOutside } from '@vueuse/components'
 import AlbumFileWrapper from '@/views/album/components/AlbumFileWrapper.vue'
 import { useRoute } from 'vue-router'
+import * as albumApi from '@/apis/album'
+
 // Stores
 const albumStore = useAlbumStore()
 const route = useRoute()
@@ -39,19 +41,22 @@ const ignoreRef = ref()
 const isAlbumPage = ref<boolean>(path === '/album' || path.startsWith('/album')) // Album page or album file page
 
 // Event
-onMounted(() => {
-  albumInfos.value = [
-    {
-      name: '1',
-      albumId: 1,
-      description: '1'
-    },
-    {
-      name: '2',
-      albumId: 2,
-      description: '2'
-    }
-  ]
+onMounted(async () => {
+  const result = await albumApi.getAlbums({
+    page: 1,
+    unlimited: true
+  })
+
+  if (result) {
+    albumInfos.value = Array.from(result.albums.values()).map(album => {
+      return {
+        albumId: album.albumId,
+        name: album.albumName,
+        description: album.description
+      }
+    })
+    albumStore.setAlbums(result)
+  }
 })
 
 // Methods

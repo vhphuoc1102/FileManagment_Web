@@ -12,6 +12,7 @@ declare module 'vue' {
     AccordionHeader: typeof import('primevue/accordionheader')['default']
     AccordionPanel: typeof import('primevue/accordionpanel')['default']
     AlbumDialog: typeof import('./src/components/AlbumDialog.vue')['default']
+    AlbumFileDialog: typeof import('./src/components/AlbumFileDialog.vue')['default']
     AlbumItem: typeof import('./src/components/AlbumItem.vue')['default']
     Avatar: typeof import('primevue/avatar')['default']
     Badge: typeof import('primevue/badge')['default']

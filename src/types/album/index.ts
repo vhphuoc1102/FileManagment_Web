@@ -4,6 +4,12 @@ interface AlbumInfo {
   description: string
 }
 
+interface AlbumGeneralInfo {
+  name: string,
+  description: string
+}
+
 export type {
-  AlbumInfo
+  AlbumInfo,
+  AlbumGeneralInfo
 }

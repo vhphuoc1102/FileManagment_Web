@@ -3,7 +3,6 @@
     <div class="grow">
       <NavigationBar class="mb-10" layout="User" />
       <RouterView />
-      <FooterBar />
     </div>
   </div>
 </template>

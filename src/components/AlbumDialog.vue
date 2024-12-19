@@ -18,25 +18,41 @@
       </IftaLabel>
     </div>
     <div class="flex justify-end gap-2">
-      <Button label="Cancel" severity="secondary" type="button" @click="close" />
-      <Button label="Save" type="button" @click="onSave" />
+      <Button label="Cancel" severity="danger" type="button" @click="close" />
+      <Button :label="actionText" type="button" @click="next" />
     </div>
   </Dialog>
 </template>
 
 <script lang="ts" setup>
 import type { AlbumInfo } from '@/types/album'
-import { computed } from 'vue'
+import { computed, ref, unref } from 'vue'
+import { updateAlbum } from '@/apis/album'
+import * as toast from '@/composables/toast'
 
+const formData = ref({
+  name: '',
+  description: ''
+})
 const HEADER = {
   CREATE: 'New Album',
   UPDATE: 'Update Album'
 }
+
 const visible = defineModel<boolean | undefined>()
+const emit = defineEmits(['next-step'])
 const props = defineProps({
   albumInfo: {
     type: Object as () => AlbumInfo,
     require: false
+  }
+})
+
+const actionText = computed(() => {
+  if (props.albumInfo) {
+    return 'Update'
+  } else {
+    return 'Next'
   }
 })
 const header = computed(() => {
@@ -49,9 +65,17 @@ const header = computed(() => {
 const close = () => {
   visible.value = false
 }
-const onSave = () => {
-  // TODO: Call API
-  close()
+const next = async () => {
+  if (props.albumInfo) {
+    const result = await updateAlbum(props.albumInfo.albumId, unref(formData))
+    if (result) {
+      toast.info('Update album success', '')
+      close()
+    }
+  } else {
+    close()
+    emit('next-step', unref(formData))
+  }
 }
 </script>
 

@@ -2,6 +2,7 @@ import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 import type { App } from 'vue'
 import MainLayout from '@/layouts/main/MainLayout.vue'
 import UserLayout from '@/layouts/user/UserLayout.vue'
+import UserInfoPage from '@/views/user/UserInfoPage.vue'
 
 const routes: AppRouteRecordRaw[] = [
   {
@@ -81,6 +82,11 @@ const routes: AppRouteRecordRaw[] = [
       {
         path: '',
         component: () => import('@/views/album/AlbumPage.vue')
+      },
+      {
+        path: ':id/file',
+        name: 'Child',
+        component: () => import('@/views/album/AlbumPage.vue')
       }
     ]
   },
@@ -116,7 +122,7 @@ const routes: AppRouteRecordRaw[] = [
       {
         path: '',
         name: 'User Info',
-        component: () => import('@/views/user/UserInfoPage.vue')
+        component: UserInfoPage
       }
     ]
   }

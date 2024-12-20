@@ -3,7 +3,7 @@ export interface CreateAlbumRequest {
 
   description: string;
 
-  fileIds?: Set<number>;
+  fileIds?: Array<number>;
 }
 
 export interface UpdateAlbumRequest {
@@ -13,5 +13,5 @@ export interface UpdateAlbumRequest {
 
 export interface ModifyFileAlbumRequest {
   operation: number;
-  fileIds: Set<number>;
+  fileIds: Array<number>;
 }

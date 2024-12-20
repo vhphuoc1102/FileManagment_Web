@@ -40,6 +40,8 @@ import { computed, onMounted, ref } from 'vue'
 import type { FileInfoWithStatus, FileTimeGroupInfo } from '@/stores/modules/home'
 import FileTimeGroup from '@/views/home/components/FileTimeGroup.vue'
 import * as fileApi from '@/apis/file'
+import * as albumApi from '@/apis/album'
+import * as toast from '@/composables/toast'
 
 const emit = defineEmits(['back'])
 const selectedItemsCount = computed(() => groups.value.reduce((acc, group) => {
@@ -101,7 +103,19 @@ const onClose = () => {
   visible.value = false
 }
 
-const onSave = () => {
+const onSave = async () => {
+  const activatedFileIds = groups.value.flatMap(group =>
+    group.files.filter(file => file.activated).map(file => file.fileInfo.fileId)
+  )
+
+  await albumApi.createAlbum({
+    name: props.creatingAlbumInfo ? props.creatingAlbumInfo.name : '',
+    description: props.creatingAlbumInfo ? props.creatingAlbumInfo.description : '',
+    fileIds: activatedFileIds
+  }).then(() => {
+    toast.info('Album created successfully', '')
+    onClose()
+  })
 }
 
 </script>

@@ -5,7 +5,8 @@
     }
   }">
     <template #start>
-      <span v-if="props.layout === 'User'" class="flex items-center gap-1 px-2 justify-center cursor-pointer">
+      <span v-if="props.layout === 'User'" class="flex items-center gap-1 px-2 justify-center cursor-pointer"
+            @click="backHome">
         <span class="text-2xl font-semibold">Image <span class="text-primary">Storage</span></span>
       </span>
       <Button v-else icon="pi pi-bars" @click="toggleVisible" />
@@ -35,9 +36,10 @@ import { ref } from 'vue'
 import type { MenuItemCommandEvent } from 'primevue/menuitem'
 import { useUserStoreWithOut } from '@/stores/modules/user'
 import { useConfirm } from 'primevue/useconfirm'
+import { useRouter } from 'vue-router'
 
 const confirm = useConfirm()
-
+const router = useRouter()
 const settingStore = useSettingStoreWithOut()
 const userStore = useUserStoreWithOut()
 const props = defineProps({
@@ -63,7 +65,9 @@ const toggleAvatar = (event: MouseEvent) => {
 const onClickAvatarItem = (event: MenuItemCommandEvent) => {
   const label = event.item.key
   if (label === avatarKeys.USER_PROFILE) {
+    router.push('/user')
   } else if (label === avatarKeys.SETTING) {
+    router.push('/setting')
   } else if (label === avatarKeys.LOGOUT) {
     confirm.require({
       message: 'Are you sure you want to log out?',
@@ -96,6 +100,10 @@ const avatarItems = ref([
     command: onClickAvatarItem
   }
 ])
+
+const backHome = () => {
+  router.push('/')
+}
 </script>
 
 <style scoped>

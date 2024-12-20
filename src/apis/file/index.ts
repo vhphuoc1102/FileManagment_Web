@@ -1,6 +1,6 @@
 import request from '@/axios'
-import type { DownloadFileRequest, GetFileGroupsParam, GetFilesParam } from '@/apis/file/request'
-import type { GetFileGroupResponse, GetFilesResponse } from '@/apis/file/response'
+import type { DownloadFileRequest, GetFileGroupsParam, GetFilesParam, GetMetaParam } from '@/apis/file/request'
+import type { GetFileGroupResponse, GetFileMetaDataResponse, GetFilesResponse } from '@/apis/file/response'
 import type { AxiosResponse } from 'axios'
 
 export const getFileGroups = (param: GetFileGroupsParam): Promise<Array<GetFileGroupResponse>> => {
@@ -17,4 +17,8 @@ export const downloadFile = (data: DownloadFileRequest): Promise<AxiosResponse<B
 
 export const getFiles = (param: GetFilesParam): Promise<Array<GetFilesResponse>> => {
   return request.get({ url: '/file/list', params: param })
+}
+
+export const getMeta = (param: GetMetaParam): Promise<GetFileMetaDataResponse> => {
+  return request.get({ url: '/file/meta', params: param })
 }

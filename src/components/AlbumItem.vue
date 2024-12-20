@@ -27,6 +27,7 @@
           }" />
     </div>
   </a>
+  <AlbumDialog v-model="showAlbumDialog" :album-info="props" />
   <ContextMenu ref="contextMenu" :model="menuItems" />
 </template>
 
@@ -35,6 +36,7 @@ import { computed, ref } from 'vue'
 import { useAlbumStoreWithOut } from '@/stores/modules/album'
 import type { AlbumInfo } from '@/types/album'
 import { useRouter } from 'vue-router'
+import AlbumDialog from '@/components/AlbumDialog.vue'
 
 // Stores
 const albumStore = useAlbumStoreWithOut()
@@ -48,6 +50,7 @@ const props = withDefaults(defineProps<AlbumInfo>(), {
 })
 
 // Variables
+const showAlbumDialog = ref<boolean>(false)
 const target = ref()
 const mouseOver = ref(false)
 const activated = computed(() => {
@@ -62,6 +65,13 @@ const menuItems = [
   {
     label: 'Download',
     icon: 'pi pi-download'
+  },
+  {
+    label: 'Rename',
+    icon: 'pi pi-download',
+    command: () => {
+      showAlbumDialog.value = true
+    }
   },
   {
     label: 'Share',
@@ -87,7 +97,8 @@ const onClick = () => {
 const onDbClick = () => {
   onClick()
   albumStore.addBreadcrumb(props)
-  router.push(`/album/${props.albumId}`)
+  albumStore.setAlbumId(props.albumId)
+  router.push(`/album/${props.albumId}/file`)
 }
 
 const onCtrlClick = () => {

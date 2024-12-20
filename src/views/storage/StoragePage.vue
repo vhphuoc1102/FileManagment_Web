@@ -14,6 +14,8 @@
             </div>
           </AccordionContent>
         </AccordionPanel>
+      </Accordion>
+      <Accordion value="1">
         <AccordionPanel v-if="fileInfos.length > 0" class="border-0" value="1">
           <AccordionHeader class="text-[--p-surface-500] font-semibold w-fit ml-4 flex gap-3 !py-2">Files
           </AccordionHeader>

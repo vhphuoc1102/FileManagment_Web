@@ -13,6 +13,7 @@ interface AlBumState {
   albumFiles: Array<AlbumFileWithStatus>,
   breadcrumbs: Array<AlbumInfo>,
   albums: GetAlbumsResponse,
+  albumId?: number
 }
 
 export const useAlbumStore = defineStore('album', {
@@ -23,7 +24,8 @@ export const useAlbumStore = defineStore('album', {
       breadcrumbs: [],
       albums: {
         albums: new Map()
-      }
+      },
+      albumId: undefined
     }
   },
   getters: {
@@ -38,6 +40,9 @@ export const useAlbumStore = defineStore('album', {
     },
     getAlbums(): GetAlbumsResponse {
       return this.albums
+    },
+    getAlbumId(): number | undefined {
+      return this.albumId
     }
   },
   actions: {
@@ -62,8 +67,14 @@ export const useAlbumStore = defineStore('album', {
     addBreadcrumb(breadcrumb: AlbumInfo): void {
       this.breadcrumbs.push(breadcrumb)
     },
+    clearBreadcrumbs(): void {
+      this.breadcrumbs = []
+    },
     setAlbums(albums: GetAlbumsResponse): void {
       this.albums = albums
+    },
+    setAlbumId(albumId: number | undefined): void {
+      this.albumId = albumId
     }
   }
 })

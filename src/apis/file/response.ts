@@ -15,3 +15,7 @@ export interface GetFilesResponse {
   fileName: string;
   fileContent: Uint8Array;
 }
+
+export interface GetFileMetaDataResponse {
+  metadata: Map<string, object>;
+}

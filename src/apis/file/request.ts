@@ -11,3 +11,7 @@ export interface GetFilesParam {
   albumId?: number,
   parentDirectoryId?: number
 }
+
+export interface GetMetaParam {
+  fileId: number
+}

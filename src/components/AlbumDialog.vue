@@ -10,11 +10,12 @@
     <div class="flex flex-col w-96 gap-5">
       <IftaLabel>
         <label class="font-semibold" for="name">Name</label>
-        <InputText id="name" autocomplete="off" class="flex-auto w-full" />
+        <InputText id="name" v-model="formData.name" autocomplete="off" class="flex-auto w-full" />
       </IftaLabel>
       <IftaLabel>
         <label class="font-semibold" for="description">Description</label>
-        <Textarea id="description" class="w-full" cols="30" rows="3" style="resize:none" />
+        <Textarea id="description" v-model="formData.description" class="w-full" cols="30" rows="3"
+                  style="resize:none" />
       </IftaLabel>
     </div>
     <div class="flex justify-end gap-2">
@@ -26,9 +27,19 @@
 
 <script lang="ts" setup>
 import type { AlbumInfo } from '@/types/album'
-import { computed, ref, unref } from 'vue'
+import { computed, onMounted, ref, unref } from 'vue'
 import { updateAlbum } from '@/apis/album'
 import * as toast from '@/composables/toast'
+
+
+onMounted(() => {
+  if (props.albumInfo) {
+    formData.value = {
+      name: props.albumInfo.name,
+      description: props.albumInfo.description
+    }
+  }
+})
 
 const formData = ref({
   name: '',

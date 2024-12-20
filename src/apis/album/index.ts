@@ -11,6 +11,6 @@ export const updateAlbum = (albumId: number, data: UpdateAlbumRequest) => {
   return request.put({ url: `/album/${albumId}`, data: data })
 }
 
-export const getAlbums = (params: FilterParams): Promise<GetAlbumsResponse> => {
-  return request.get({ url: '/album/list', params: params })
+export const getAlbums = (data: FilterParams): Promise<GetAlbumsResponse> => {
+  return request.post({ url: '/album/list', data: data })
 }

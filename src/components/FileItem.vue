@@ -1,6 +1,6 @@
 <template>
   <a ref="target"
-     :class="['flex flex-col items-center w-36 cursor-pointer h-fit pt-6 relative',
+     :class="['flex flex-col items-center w-40 cursor-pointer h-fit pt-6 relative',
     activated || mouseOver ? 'border-2 rounded-md bg-[var(--p-surface-200)] border-[var(--p-primary-500)]' : '']"
      @contextmenu="onRightClick"
      @dblclick="onDbClick"
@@ -28,12 +28,14 @@
     </div>
   </a>
   <ContextMenu ref="contextMenu" :model="folderMenuItems" />
+  <InfoDrawer v-model="infoVisible" :file-id="props.fileId" :visible="infoVisible" />
 </template>
 
 <script lang="ts" setup>
 import type { FileInfo } from '@/types/file'
 import { computed, ref } from 'vue'
 import { useFileStoreWithOut } from '@/stores/modules/file'
+import InfoDrawer from '@/components/InfoDrawer.vue'
 
 // Stores
 const fileStore = useFileStoreWithOut()
@@ -46,6 +48,7 @@ const props = withDefaults(defineProps<FileInfo>(), {
 })
 
 // Variables
+const infoVisible = ref<boolean>(false)
 const image = computed(() => `data:image/jpeg;base64,${props.file}`)
 const target = ref()
 const mouseOver = ref(false)
@@ -56,7 +59,10 @@ const folderOp = ref()
 const folderMenuItems = [
   {
     label: 'Info',
-    icon: 'pi pi-info-circle'
+    icon: 'pi pi-info-circle',
+    command: () => {
+      infoVisible.value = true
+    }
   },
   {
     label: 'Download',

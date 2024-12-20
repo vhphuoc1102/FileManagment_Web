@@ -26,6 +26,7 @@ declare module 'vue' {
     Divider: typeof import('primevue/divider')['default']
     Drawer: typeof import('primevue/drawer')['default']
     FileInfo: typeof import('./src/components/FileInfo.vue')['default']
+    FileItem: typeof import('./src/components/FileItem.vue')['default']
     FileUpload: typeof import('primevue/fileupload')['default']
     FolderDialog: typeof import('./src/components/FolderDialog.vue')['default']
     FolderItem: typeof import('./src/components/FolderItem.vue')['default']

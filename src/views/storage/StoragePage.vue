@@ -19,8 +19,9 @@
           </AccordionHeader>
           <AccordionContent>
             <div class="flex flex-wrap gap-3 px-3">
-              <FolderItem v-for="(folder, index) in folderInfos" :key="index" ref="activeItemRef"
-                          :directory-id="folder.directoryId" :name="folder.name" />
+              <FileItem v-for="(fileInfo, index) in fileInfos" :key="index" ref="activeItemRef"
+                        v-on-click-outside="onClickOutsideHandler"
+                        :file="fileInfo.file" :file-id="fileInfo.fileId" :name="fileInfo.name"></FileItem>
             </div>
           </AccordionContent>
         </AccordionPanel>
@@ -39,10 +40,12 @@ import { useFolderStoreWithOut } from '@/stores/modules/folder'
 import { useFileStoreWithOut } from '@/stores/modules/file'
 import UtilityBar from '@/components/UtilityBar.vue'
 import { vOnClickOutside } from '@vueuse/components'
-import { useRoute } from 'vue-router'
+import * as directoryApi from '@/apis/directory'
+import * as fileApi from '@/apis/file'
+import FileItem from '@/components/FileItem.vue'
 
 // Stores
-const {loadStart, loadDone} = usePageLoading()
+const { loadStart, loadDone } = usePageLoading()
 const folderStore = useFolderStoreWithOut()
 const fileStore = useFileStoreWithOut()
 
@@ -51,22 +54,26 @@ const folderInfos = ref<FolderInfo[]>([])
 const fileInfos = ref<FileInfo[]>([])
 const activeItemRef = ref(null)
 const ignoreRef = ref()
-const { params } = useRoute()
 
 // Event
-onMounted(() => {
-  loadStart()
-  folderInfos.value = [
-    {
-      name: '1',
-      directoryId: 1
-    },
-    {
-      name: '2',
-      directoryId: 2
-    }
-  ]
-  loadDone()
+onMounted(async () => {
+  try {
+    loadStart()
+    folderInfos.value = await directoryApi.getDirectories({
+      parentDirectoryId: folderStore.getParentDirectoryId
+    })
+    fileInfos.value = (await fileApi.getFiles({
+      parentDirectoryId: folderStore.getParentDirectoryId
+    })).map(file => {
+      return {
+        fileId: file.fileId,
+        name: file.fileName,
+        file: file.fileContent
+      }
+    })
+  } finally {
+    loadDone()
+  }
 })
 
 // Methods

@@ -14,7 +14,7 @@ export const useFolderStore = defineStore('folder', {
     return {
       activatedFolders: [],
       breadcrumbs: [],
-      parentDirectoryId: undefined
+      parentDirectoryId: -1
     }
   },
   getters: {
@@ -49,6 +49,9 @@ export const useFolderStore = defineStore('folder', {
     },
     setParentDirectoryId(parentDirectoryId: number): void {
       this.parentDirectoryId = parentDirectoryId
+    },
+    setRoot(): void {
+      this.parentDirectoryId = -1
     }
   }
 })

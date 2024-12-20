@@ -10,7 +10,8 @@
           class: 'ml-1 bg-[--p-surface-500]'
         }
       }" binary class="absolute top-0" style="z-index: 2" />
-      <Image alt="Image" imageClass="h-40" preview src="/test.jpg" @show="showPreview" />
+      <Image :src="image" alt="Image" imageClass="h-40" preview
+             @show="showPreview" />
       <ContextMenu ref="contextMenu" :model="fileMenus" />
     </div>
   </div>
@@ -18,13 +19,13 @@
 
 <script lang="ts" setup>
 import type { FileInfoWithStatus, FileTimeGroupInfo } from '@/stores/modules/home'
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { h, render } from 'vue'
 import FilePreviewButton from '@/views/home/components/FilePreviewButton.vue'
 
 const fileInfo = defineModel<FileInfoWithStatus>('file', { required: true })
 const fileGroup = defineModel<FileTimeGroupInfo>('fileGroup', { required: true })
-
+const image = computed(() => `data:image/jpeg;base64,${fileInfo.value.fileInfo.file}`)
 const fileMenus = [
   {
     label: 'Info',

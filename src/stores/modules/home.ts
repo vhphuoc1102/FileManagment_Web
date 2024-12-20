@@ -20,28 +20,7 @@ interface HomeState {
 export const useHomeStore = defineStore('home', {
   state: (): HomeState => {
     return {
-      fileTimeGroups: [{
-        time: '2021-09-01',
-        activatedAll: false,
-        files: [
-          {
-            fileInfo: {
-              name: 'file1',
-              fileId: 1,
-              image: new File([''], 'file1')
-            },
-            activated: false
-          },
-          {
-            fileInfo: {
-              name: 'file2',
-              fileId: 2,
-              image: new File([''], 'file2')
-            },
-            activated: false
-          }
-        ]
-      }]
+      fileTimeGroups: []
     }
   },
   getters: {
@@ -57,6 +36,9 @@ export const useHomeStore = defineStore('home', {
           file.activated = false
         })
       })
+    },
+    setFileTimeGroups(fileTimeGroups: Array<FileTimeGroupInfo>) {
+      this.fileTimeGroups = fileTimeGroups
     }
   }
 })

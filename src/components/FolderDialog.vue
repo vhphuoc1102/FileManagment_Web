@@ -22,6 +22,7 @@ import { computed, onMounted, ref, unref } from 'vue'
 import * as directoryApi from '@/apis/directory'
 import { useFolderStoreWithOut } from '@/stores/modules/folder'
 import { usePageLoading } from '@/hooks/web/usePageLoading'
+import * as toast from '@/composables/toast'
 
 const folderStore = useFolderStoreWithOut()
 const { loadStart, loadDone } = usePageLoading()
@@ -64,18 +65,21 @@ const close = () => {
 const onSave = async () => {
   try {
     loadStart()
-    let result
     if (!props.folderInfo || props.folderInfo.directoryId == -1) {
-      result = await directoryApi.addDirectory({
+      await directoryApi.addDirectory({
         name: unref(name),
         parentDirectoryId: folderStore.getParentDirectoryId
+      }).then(() => {
+        toast.info('Create folder successfully', '')
+        close()
       })
     } else {
-      result = await directoryApi.updateDirectory(props.folderInfo.directoryId, unref(name))
+      await directoryApi.updateDirectory(props.folderInfo.directoryId, unref(name)).then(() => {
+        toast.info('Update folder successfully', '')
+        close()
+      })
     }
-    if (result) {
-      close()
-    }
+
   } finally {
     loadDone()
   }

@@ -6,7 +6,8 @@ export interface FolderInfo {
 export interface FileInfo {
   name: string
   fileId: number
-  image: File
+  image?: File,
+  file?: Uint8Array
 }
 
 export interface FileTimeGroupInfo {

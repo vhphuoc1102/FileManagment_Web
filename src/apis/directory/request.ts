@@ -6,3 +6,7 @@ export interface AddDirectoryRequest {
 export interface UpdateDirectoryRequest {
   name: string
 }
+
+export interface GetDirectoriesParam {
+  parentDirectoryId: number | undefined
+}

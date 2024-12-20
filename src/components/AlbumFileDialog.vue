@@ -36,9 +36,10 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import type { FileInfoWithStatus, FileTimeGroupInfo } from '@/stores/modules/home'
 import FileTimeGroup from '@/views/home/components/FileTimeGroup.vue'
+import * as fileApi from '@/apis/file'
 
 const emit = defineEmits(['back'])
 const selectedItemsCount = computed(() => groups.value.reduce((acc, group) => {
@@ -54,6 +55,34 @@ const props = defineProps({
   }
 })
 const groups = ref<FileTimeGroupInfo[]>([])
+
+onMounted(async () => {
+  const result = await fileApi.getFileGroups({
+    storageFileKind: 1
+  })
+  if (result && result.length > 0) {
+    const fileGroups: FileTimeGroupInfo[] = []
+    result.forEach(group => {
+      fileGroups.push({
+        activatedAll: false,
+        time: group.uploadTs,
+        files: group.files ? group.files.map(file => {
+          return {
+            fileInfo: {
+              name: file.fileName,
+              fileId: file.fileId,
+              file: file.fileContent
+            },
+            activated: false
+          }
+        }) : []
+      })
+    })
+    groups.value = fileGroups
+  }
+})
+
+
 const onCloseUtility = () => {
   groups.value.map(group => {
     group.activatedAll = false

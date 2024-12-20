@@ -10,7 +10,7 @@
           class: 'ml-1 bg-[--p-surface-300]'
         }
       }" binary />
-      <span class="text-[--p-surface-500] font-semibold">Mon, Dec 2</span>
+      <span class="text-[--p-surface-500] font-semibold">{{ group.time }}</span>
     </div>
     <div class="flex gap-1">
       <div v-for="(fileInfo, index) in group.files" :key="index">

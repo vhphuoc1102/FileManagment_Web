@@ -1,12 +1,14 @@
 <template>
   <div>
-    <div ref="mapContainer" class="map-container"></div>
+
   </div>
 </template>
 
 <script lang="ts" setup>
+
 </script>
 
 <style scoped>
 
 </style>
+

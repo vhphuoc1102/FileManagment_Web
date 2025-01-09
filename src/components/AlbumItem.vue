@@ -94,11 +94,15 @@ const onClick = () => {
   albumStore.addActivatedAlbum(props.albumId)
 }
 
-const onDbClick = () => {
+const onDbClick = async () => {
   onClick()
   albumStore.addBreadcrumb(props)
   albumStore.setAlbumId(props.albumId)
-  router.push(`/album/${props.albumId}/file`)
+  await router.push({
+    path: 'album', query: {
+      albumId: props.albumId
+    }
+  })
 }
 
 const onCtrlClick = () => {

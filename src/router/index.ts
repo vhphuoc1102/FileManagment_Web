@@ -3,11 +3,22 @@ import type { App } from 'vue'
 import MainLayout from '@/layouts/main/MainLayout.vue'
 import UserLayout from '@/layouts/user/UserLayout.vue'
 import UserInfoPage from '@/views/user/UserInfoPage.vue'
+import UserDetailLayout from '@/layouts/user/UserDetailLayout.vue'
 
 const routes: AppRouteRecordRaw[] = [
   {
     path: '/',
-    redirect: '/home'
+    redirect: '/top'
+  },
+  {
+    path: '/top',
+    component: UserLayout,
+    children: [
+      {
+        path: '',
+        component: () => import('@/views/top/TopPage.vue')
+      }
+    ]
   },
   {
     path: '/login',
@@ -27,7 +38,7 @@ const routes: AppRouteRecordRaw[] = [
   {
     path: '/storage',
     name: 'Storage',
-    component: MainLayout,
+    component: UserLayout,
     meta: {
       title: 'Storage'
     },
@@ -35,60 +46,86 @@ const routes: AppRouteRecordRaw[] = [
       {
         path: '',
         name: 'Root',
-        component: () => import('@/views/storage/StoragePage.vue')
+        component: UserDetailLayout,
+        children: [
+          {
+            path: '',
+            component: () => import('@/views/storage/StoragePage.vue')
+          }
+        ]
       },
       {
         path: ':id',
         name: 'Child',
-        component: () => import('@/views/storage/StoragePage.vue')
+        component: UserDetailLayout,
+        children: [
+          {
+            path: '',
+            component: () => import('@/views/storage/StoragePage.vue')
+          }
+        ]
       }
     ]
   },
   {
     path: '/location',
     name: 'Location',
-    component: MainLayout,
+    component: UserLayout,
     meta: {
       title: 'Location'
     }, children: [
       {
         path: '',
-        component: () => import('@/views/location/LocationPage.vue')
+        component: UserDetailLayout,
+        children: [
+          {
+            path: '',
+            component: () => import('@/views/location/LocationPage.vue')
+          }
+        ]
       }
     ]
   },
   {
     path: '/home',
     name: 'Home',
-    component: MainLayout,
+    component: UserLayout,
     meta: {
       title: 'Home'
     },
-    children: [
-      {
-        path: '',
-        component: () => import('@/views/home/HomePage.vue')
-      }
+    children: [{
+      path: '',
+      component: UserDetailLayout,
+      children: [
+        {
+          path: '',
+          component: () => import('@/views/home/HomePage.vue')
+        }
+      ]
+    }
     ]
   },
   {
     path: '/album',
     name: 'Album',
-    component: MainLayout,
+    component: UserLayout,
     meta: {
       title: 'Album'
     },
-    children: [
-      {
-        path: '',
-        component: () => import('@/views/album/AlbumPage.vue')
-      },
-      {
-        path: ':id/file',
-        name: 'Child',
-        component: () => import('@/views/album/AlbumPage.vue')
-      }
-    ]
+    children: [{
+      path: '',
+      component: UserDetailLayout,
+      children: [
+        {
+          path: '',
+          component: () => import('@/views/album/AlbumPage.vue')
+        },
+        {
+          path: ':id/file',
+          component: () => import('@/views/album/AlbumPage.vue')
+        }
+      ]
+    }]
   },
   {
     path: '/shared',
@@ -123,6 +160,17 @@ const routes: AppRouteRecordRaw[] = [
         path: '',
         name: 'User Info',
         component: UserInfoPage
+      }
+    ]
+  },
+  {
+    path: '/user-detail',
+    component: UserLayout,
+    children: [
+      {
+        path: '',
+        name: 'User Detail',
+        component: () => import('@/views/user/UserPage.vue')
       }
     ]
   }

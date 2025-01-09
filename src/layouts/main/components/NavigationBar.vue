@@ -1,13 +1,13 @@
 <template>
   <Toolbar :pt="{
     root: {
-      class: 'rounded-none border-x-0'
+      class: 'rounded-none border-x-0 border-y-1 bg-gray-100'
     }
   }">
     <template #start>
       <span v-if="props.layout === 'User'" class="flex items-center gap-1 px-2 justify-center cursor-pointer"
             @click="backHome">
-        <span class="text-2xl font-semibold">Image <span class="text-primary">Storage</span></span>
+        <span class="text-3xl font-bold">PI<span class="text-primary">XL</span></span>
       </span>
       <Button v-else icon="pi pi-bars" @click="toggleVisible" />
     </template>
@@ -20,11 +20,18 @@
       </IconField>
     </template>
     <template #end>
-      <div class="flex items-center gap-2">
+      <Button class="mr-4" icon="pi pi-upload" label="Upload" />
+      <div v-if="isLogin()">
+        <Button class="mr-4" label="My hub" @click="onClickHub" />
+      </div>
+      <div v-if="isLogin()" class="flex items-center gap-2">
         <Button unstyled>
           <Avatar class="mr-2 cursor-pointer" icon="pi pi-user" shape="circle" size="large" @click="toggleAvatar" />
         </Button>
         <Menu id="overlay_menu" ref="avatarMenu" :model="avatarItems" :popup="true" />
+      </div>
+      <div v-if="!isLogin()">
+        <Button icon="pi pi-user" label="Login" @click="onClickLogin" />
       </div>
     </template>
   </Toolbar>
@@ -32,7 +39,7 @@
 
 <script lang="ts" setup>
 import { useSettingStoreWithOut } from '@/stores/modules/setting'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import type { MenuItemCommandEvent } from 'primevue/menuitem'
 import { useUserStoreWithOut } from '@/stores/modules/user'
 import { useConfirm } from 'primevue/useconfirm'
@@ -48,12 +55,16 @@ const props = defineProps({
     required: false
   }
 })
-
+const isLogin = computed(() => userStore.isAuth)
 const avatarMenu = ref()
 const avatarKeys = {
   USER_PROFILE: 'user',
   SETTING: 'setting',
   LOGOUT: 'logout'
+}
+
+const onClickLogin = () => {
+  router.push('/login')
 }
 
 const toggleVisible = () => {
@@ -103,6 +114,10 @@ const avatarItems = ref([
 
 const backHome = () => {
   router.push('/')
+}
+
+const onClickHub = () => {
+  router.push('/home')
 }
 </script>
 

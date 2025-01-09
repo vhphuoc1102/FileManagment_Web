@@ -6,3 +6,9 @@ export interface AuthRequest {
 export interface RefreshRequest {
   refreshToken: string
 }
+
+export interface UpdateInfoRequest {
+  lastName: string,
+  firstName: string,
+  username: string,
+}

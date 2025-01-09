@@ -1,9 +1,11 @@
 <template>
-  <div class="p-8">
-    <HomeUtilityBar class="mb-4" />
-    <div class="flex flex-wrap gap-10">
-      <div v-for="(group, index) in groups" :key="index">
-        <FileTimeGroup v-model="groups[index]" />
+  <div class="w-full">
+    <div class="p-8">
+      <HomeUtilityBar class="mb-4" />
+      <div class="flex flex-wrap gap-10">
+        <div v-for="(group, index) in groups" :key="index">
+          <FileTimeGroup v-model="groups[index]" />
+        </div>
       </div>
     </div>
   </div>

@@ -8,7 +8,7 @@
         class: 'flex flex-col gap-4'
       }
     }" header="Upload files" modal>
-    <FileUpload :maxFileSize="1000000" :multiple="true" accept="image/*" name="demo[]" url="/api/upload"
+    <FileUpload :maxFileSize="100000000" :multiple="true" accept="image/*" name="demo[]" url="/api/upload"
                 @select="onSelectedFiles" @upload="onTemplatedUpload()">
       <template #header="{ chooseCallback, uploadCallback, clearCallback, files }">
         <div class="flex flex-wrap justify-between items-center flex-1 gap-4">

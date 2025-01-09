@@ -1,6 +1,12 @@
 <template>
-  <Drawer v-model:visible="isVisible" header="Image information" position="right">
-    <table>
+  <Drawer v-model:visible="isVisible" :pt="{
+   root : {
+     class: '!w-[30rem]'
+   }
+          }" header="Image information"
+          position="right"
+  >
+    <table class="info-table">
       <thead>
       <tr>
         <th>Attribute</th>
@@ -16,6 +22,7 @@
     </table>
   </Drawer>
 </template>
+
 <script lang="ts" setup>
 import { defineProps, ref, onMounted } from 'vue'
 import { getMeta } from '@/apis/file'
@@ -40,5 +47,38 @@ onMounted(async () => {
   metadata.value = result.metadata
 })
 </script>
+
 <style scoped>
+.info-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 1em;
+  font-family: 'Arial', sans-serif;
+  min-width: 400px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.info-table thead tr {
+  background-color: #009879;
+  color: #ffffff;
+  text-align: left;
+}
+
+.info-table th,
+.info-table td {
+  padding: 12px 15px;
+}
+
+.info-table tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+
+.info-table tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+.info-table tbody tr:last-of-type {
+  border-bottom: 2px solid #009879;
+}
 </style>

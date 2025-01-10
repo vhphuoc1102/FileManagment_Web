@@ -14,6 +14,8 @@
              @show="showPreview" />
       <ContextMenu ref="contextMenu" :model="fileMenus" />
     </div>
+    <InfoDrawer v-model="infoVisible" :file-id="fileInfo.fileInfo.fileId" :visible="infoVisible" />
+    <ShareDialog v-model="shareVisible" :file-id="fileInfo.fileInfo.fileId" :visible="shareVisible" />
   </div>
 </template>
 
@@ -22,14 +24,21 @@ import type { FileInfoWithStatus, FileTimeGroupInfo } from '@/stores/modules/hom
 import { computed, ref, watch } from 'vue'
 import { h, render } from 'vue'
 import FilePreviewButton from '@/views/home/components/FilePreviewButton.vue'
+import InfoDrawer from '@/components/InfoDrawer.vue'
+import ShareDialog from '@/components/ShareDialog.vue'
 
 const fileInfo = defineModel<FileInfoWithStatus>('file', { required: true })
 const fileGroup = defineModel<FileTimeGroupInfo>('fileGroup', { required: true })
 const image = computed(() => `data:image/jpeg;base64,${fileInfo.value.fileInfo.file}`)
+const infoVisible = ref<boolean>(false)
+const shareVisible = ref<boolean>(false)
 const fileMenus = [
   {
     label: 'Info',
-    icon: 'pi pi-info-circle'
+    icon: 'pi pi-info-circle',
+    command: () => {
+      infoVisible.value = true
+    }
   },
   {
     label: 'Download',
@@ -37,7 +46,10 @@ const fileMenus = [
   },
   {
     label: 'Share',
-    icon: 'pi pi-user-plus'
+    icon: 'pi pi-user-plus',
+    command: () => {
+      shareVisible.value = true
+    }
   },
   {
     label: 'Add to album',

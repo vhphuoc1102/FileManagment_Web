@@ -26,7 +26,7 @@ const groups = computed(() => homeStore.getFileTimeGroups)
 // Event
 onMounted(async () => {
   const result = await fileApi.getFileGroups({
-    storageFileKind: 1
+    storageFileKind: 0
   })
   if (result && result.length > 0) {
     const fileGroups: FileTimeGroupInfo[] = []

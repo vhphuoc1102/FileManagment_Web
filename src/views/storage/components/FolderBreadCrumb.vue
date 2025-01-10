@@ -9,7 +9,7 @@
       </span>
         </a>
       </router-link>
-      <a v-else-if="!item.route" :href="getBreadcrumbRoute(item.directoryId)" :target="item.target"
+      <a v-else-if="!item.route" :target="item.target" href="/storage"
          v-bind="props.action" @click="onClickBreadCrumb(item)">
         <span class="text-surface-700 dark:text-surface-0">{{ item.name }}</span>
       </a>
@@ -40,7 +40,6 @@ const home = ref({
 const items = computed(() => folderStore.getBreadcrumbs)
 
 // Methods
-const getBreadcrumbRoute = (directory: number) => '/storage/' + directory
 
 const onClickBreadCrumb = (item: MenuItem) => {
   const index = folderStore.getBreadcrumbs.findIndex((breadcrumb) => breadcrumb.directoryId === item.directoryId)
@@ -49,6 +48,7 @@ const onClickBreadCrumb = (item: MenuItem) => {
 
 const onClickHome = () => {
   folderStore.setBreadcrumbs([])
+  folderStore.setRoot()
   router.push('/storage')
 }
 </script>

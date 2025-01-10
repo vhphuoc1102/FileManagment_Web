@@ -1,12 +1,13 @@
 <template>
-  <div class="card flex justify-center">
-    <div class="flex flex-col gap-10">
+  <div class="card flex justify-center !mt-20">
+    <div class="flex flex-col gap-10 justify-center items-center">
       <div class="flex flex-col gap-4 justify-center items-center">
         <Avatar class="mr-2" image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png" shape="circle"
                 size="xlarge" @click="backHome" />
-        <span class="text-4xl font-bold">Username</span>
+        <span class="text-4xl font-bold text-pretty">{{ userInfo.username }}</span>
       </div>
-      <Form :initialValues="userInfo" :resolver class="card grid grid-cols-1 md:grid-cols-2 gap-4 w-full sm:w-96"
+      <Form v-slot="$form" :initialValues="userInfo" :resolver
+            class="card grid grid-cols-1 md:grid-cols-2 gap-4 w-full sm:w-96"
             @submit="onFormSubmit">
         <FormField v-slot="$field" class="flex flex-col gap-1 col-span-2" initialValue=""
                    name="username">
@@ -72,8 +73,10 @@ const onFormSubmit = async (e: any) => {
       lastName: e.states.lastname.value,
       username: e.states.username.value
     }).then(
-      () =>
+      () => {
         toast.add({ severity: 'success', summary: 'Form is submitted.', life: 3000 })
+        window.location.reload()
+      }
     )
   }
 }

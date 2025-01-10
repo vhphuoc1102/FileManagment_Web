@@ -115,6 +115,7 @@ const onSave = async () => {
   }).then(() => {
     toast.info('Album created successfully', '')
     onClose()
+    window.location.reload()
   })
 }
 

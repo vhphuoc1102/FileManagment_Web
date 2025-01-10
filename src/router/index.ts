@@ -22,18 +22,29 @@ const routes: AppRouteRecordRaw[] = [
   },
   {
     path: '/login',
-    component: () => import('@/views/auth/LoginPage.vue'),
+    component: UserLayout,
     meta: {
       title: 'Login'
-    }
+    },
+    children: [
+      {
+        path: '',
+        component: () => import('@/views/auth/LoginPage.vue')
+      }
+    ]
   },
   {
     path: '/signup',
     name: 'Signup',
-    component: () => import('@/views/auth/RegisterPage.vue'),
+    component: UserLayout,
     meta: {
       title: 'Signup'
-    }
+    }, children: [
+      {
+        path: '',
+        component: () => import('@/views/auth/RegisterPage.vue')
+      }
+    ]
   },
   {
     path: '/storage',
@@ -130,21 +141,26 @@ const routes: AppRouteRecordRaw[] = [
   {
     path: '/shared',
     name: 'SharedWithMe',
-    component: MainLayout,
+    component: UserLayout,
     meta: {
       title: 'Shared With Me'
     },
-    children: [
-      {
-        path: '/shared-with-me',
-        name: 'Shared with me',
-        component: () => import('@/views/shared/SharedWithMePage.vue')
-      },
-      {
-        path: '/sharing',
-        name: 'Sharing',
-        component: () => import('@/views/shared/SharingPage.vue')
-      }
+    children: [{
+      path: '',
+      component: UserDetailLayout,
+      children: [
+        {
+          path: '/shared-with-me',
+          name: 'Shared with me',
+          component: () => import('@/views/shared/SharedWithMePage.vue')
+        },
+        {
+          path: '/sharing',
+          name: 'Sharing',
+          component: () => import('@/views/shared/SharingPage.vue')
+        }
+      ]
+    }
     ]
   },
   {

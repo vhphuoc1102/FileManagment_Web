@@ -89,7 +89,7 @@ const onDbClick = () => {
   // Add to breadcrumb
   folderStore.addBreadcrumb(props)
   folderStore.setParentDirectoryId(props.directoryId)
-  router.push(`/storage/${props.directoryId}`)
+  window.location.reload()
 }
 
 const onCtrlClick = () => {

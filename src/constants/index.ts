@@ -13,3 +13,15 @@ export const SHARE = {
   SHARE_PUBLIC: 1,
   SHARE_PRIVATE: 0
 }
+
+export const SHARE_TEXT = {
+  NOT_SHARE: '-1',
+  SHARE_PUBLIC: '1',
+  SHARE_PRIVATE: '0'
+}
+
+export const RESOURCE_KIND = {
+  FILE: 0,
+  DIRECTORY: 1,
+  ALBUM: 2
+}

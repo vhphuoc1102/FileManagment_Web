@@ -19,7 +19,10 @@ declare module 'vue' {
     BlockUI: typeof import('primevue/blockui')['default']
     Breadcrumb: typeof import('primevue/breadcrumb')['default']
     Button: typeof import('primevue/button')['default']
+    Card: typeof import('primevue/card')['default']
     Checkbox: typeof import('primevue/checkbox')['default']
+    Chip: typeof import('primevue/chip')['default']
+    CommonDialog: typeof import('./src/components/CommonDialog.vue')['default']
     ConfirmDialog: typeof import('primevue/confirmdialog')['default']
     ContextMenu: typeof import('primevue/contextmenu')['default']
     Dialog: typeof import('primevue/dialog')['default']
@@ -56,6 +59,7 @@ declare module 'vue' {
     Textarea: typeof import('primevue/textarea')['default']
     Toast: typeof import('primevue/toast')['default']
     Toolbar: typeof import('primevue/toolbar')['default']
+    TrashUtilityBar: typeof import('./src/components/TrashUtilityBar.vue')['default']
     UploadFileDialog: typeof import('./src/components/UploadFileDialog.vue')['default']
     UtilityBar: typeof import('./src/components/UtilityBar.vue')['default']
   }

@@ -1,6 +1,6 @@
 <template>
   <div class="w-full">
-    <div id="map" class="h-96" />
+    <div id="map" class="h-[32rem]" />
   </div>
 </template>
 
@@ -22,7 +22,7 @@ onMounted(() => {
     // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
     center: [props.locations[0].longitude, props.locations[0].latitude],
     style: 'mapbox://styles/mapbox/streets-v12',
-    zoom: 5
+    zoom: 8
   })
 
 // Add markers to the map.

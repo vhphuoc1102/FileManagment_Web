@@ -15,3 +15,7 @@ export interface GetFilesParam {
 export interface GetMetaParam {
   fileId: number
 }
+
+export interface MoveToTrashParam {
+  fileIds: Array<number>
+}

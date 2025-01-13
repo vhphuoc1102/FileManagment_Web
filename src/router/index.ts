@@ -189,6 +189,42 @@ const routes: AppRouteRecordRaw[] = [
         component: () => import('@/views/user/UserPage.vue')
       }
     ]
+  },
+  {
+    path: '/search-result',
+    component: UserLayout,
+    children: [
+      {
+        path: '',
+        component: () => import('@/views/search/SearchResultPage.vue')
+      }
+    ]
+  },
+  {
+    path: '/image',
+    component: UserLayout,
+    children: [
+      {
+        path: ':id',
+        component: () => import('@/views/image/ImageDetailPage.vue')
+      }
+    ]
+  },
+  {
+    path: '/trash',
+    component: UserLayout,
+    children: [
+      {
+        path: '',
+        component: UserDetailLayout,
+        children: [
+          {
+            path: '',
+            component: () => import('@/views/trash/TrashPage.vue')
+          }
+        ]
+      }
+    ]
   }
 ]
 const router = createRouter({

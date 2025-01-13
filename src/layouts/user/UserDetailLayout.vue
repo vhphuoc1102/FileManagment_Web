@@ -35,7 +35,7 @@
         </template>
       </Menubar>
     </div>
-    <router-view />
+    <router-view class="px-16" />
     <FolderDialog v-model="showFolderDialog" />
     <AlbumDialog v-model="showAlbumDialog" @next-step="nextStepCreateAlbum" />
     <AlbumFileDialog v-model="showAlbumFileDialog"

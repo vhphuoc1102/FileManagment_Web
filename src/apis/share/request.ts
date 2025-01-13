@@ -5,3 +5,8 @@ export interface AddShareRequest {
   expiredTs: string | undefined,
   emails: Array<string>
 }
+
+export interface GetShareRequest {
+  resourceId: number,
+  resourceKind: number,
+}

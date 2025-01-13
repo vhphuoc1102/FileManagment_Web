@@ -13,10 +13,12 @@
     </template>
     <template #center>
       <IconField>
-        <InputIcon>
-          <i class="pi pi-search" />
-        </InputIcon>
-        <InputText class="w-96" placeholder="Search" />
+        <InputIcon :pt="{
+          root: {
+            class: 'cursor-pointer'
+          }
+        }" class="pi pi-search" @click="search" />
+        <InputText v-model="keyword" class="w-96" placeholder="Search" />
       </IconField>
     </template>
     <template #end>
@@ -39,16 +41,21 @@
 
 <script lang="ts" setup>
 import { useSettingStoreWithOut } from '@/stores/modules/setting'
-import { computed, ref } from 'vue'
+import { computed, ref, unref } from 'vue'
 import type { MenuItemCommandEvent } from 'primevue/menuitem'
 import { useUserStoreWithOut } from '@/stores/modules/user'
 import { useConfirm } from 'primevue/useconfirm'
 import { useRouter } from 'vue-router'
+import * as searchApi from '@/apis/search'
+import { useSearchStoreWithOut } from '@/stores/modules/search'
 
 const confirm = useConfirm()
 const router = useRouter()
 const settingStore = useSettingStoreWithOut()
 const userStore = useUserStoreWithOut()
+const searchStore = useSearchStoreWithOut()
+const keyword = ref(searchStore.getKeyword)
+
 const props = defineProps({
   layout: {
     type: String,
@@ -111,6 +118,20 @@ const avatarItems = ref([
     command: onClickAvatarItem
   }
 ])
+
+const search = async () => {
+  if (!unref(keyword)) {
+    return
+  }
+
+  await searchApi.search({
+    keyword: unref(keyword)
+  }).then((response) => {
+    router.push('/search-result')
+    searchStore.setSearchUsers(response.searchUsers)
+    searchStore.setSearchFiles(response.searchFiles)
+  })
+}
 
 const backHome = () => {
   router.push('/')

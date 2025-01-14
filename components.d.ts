@@ -22,7 +22,6 @@ declare module 'vue' {
     Card: typeof import('primevue/card')['default']
     Checkbox: typeof import('primevue/checkbox')['default']
     Chip: typeof import('primevue/chip')['default']
-    CommonDialog: typeof import('./src/components/CommonDialog.vue')['default']
     ConfirmDialog: typeof import('primevue/confirmdialog')['default']
     ContextMenu: typeof import('primevue/contextmenu')['default']
     Dialog: typeof import('primevue/dialog')['default']

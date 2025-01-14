@@ -9,7 +9,8 @@ export interface DownloadFileRequest {
 
 export interface GetFilesParam {
   albumId?: number,
-  parentDirectoryId?: number
+  parentDirectoryId?: number,
+  isTrash?: boolean,
 }
 
 export interface GetMetaParam {

@@ -13,6 +13,7 @@ declare global {
     readonly VITE_API_BASE_PATH: string
     readonly VITE_BASE_PATH: string
     readonly VITE_NODE_ENV: string
+    readonly VITE_MAPBOX_ACCESS_TOKEN: string
   }
 
   declare type AxiosMethod = 'get' | 'post' | 'delete' | 'put'

@@ -1,4 +1,4 @@
-import type { AuthRequest, RefreshRequest } from '@/apis/auth/request'
+import type { AuthRequest, RefreshRequest, UpdateInfoRequest } from '@/apis/auth/request'
 import type { AuthResponse, UserInfoResponse } from '@/apis/auth/response'
 import request from '@/axios'
 
@@ -16,4 +16,8 @@ export const refreshApi = (data: RefreshRequest): Promise<void> => {
 
 export const getMeApi = (): Promise<UserInfoResponse> => {
   return request.get({ url: '/auth/me' })
+}
+
+export const updateInfo = (data: UpdateInfoRequest): Promise<void> => {
+  return request.put({ url: '/auth/info', data })
 }

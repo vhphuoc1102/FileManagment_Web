@@ -72,6 +72,7 @@ const onSave = async () => {
       }).then(() => {
         toast.info('Create folder successfully', '')
         close()
+        window.location.reload()
       })
     } else {
       await directoryApi.updateDirectory(props.folderInfo.directoryId, unref(name)).then(() => {

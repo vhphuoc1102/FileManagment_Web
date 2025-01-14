@@ -14,22 +14,51 @@
              @show="showPreview" />
       <ContextMenu ref="contextMenu" :model="fileMenus" />
     </div>
+    <InfoDrawer v-model="infoVisible" :file-id="fileInfo.fileInfo.fileId" :visible="infoVisible" />
+    <ShareDialog v-if="shareVisible" v-model="shareVisible" :resource-id="fileInfo.fileInfo.fileId"
+                 :resource-kind="RESOURCE_KIND.FILE"
+                 :visible="shareVisible" />
+    <Dialog v-if="trashVisible" v-model:visible="trashVisible" :blockScroll="true" :closable="false"
+            :dismissableMask="true"
+            :draggable="false"
+            :pt="{
+            content: {
+              class: 'flex flex-col gap-5'
+            }
+          }" header="Confirm" modal>
+      <span>Do you sure want to move this image to trash ?</span>
+      <div class="flex justify-end gap-2">
+        <Button label="Cancel" severity="danger" type="button" @click="closeTrash" />
+        <Button label="Yes, I'm sure" type="button" @click="moveToTrash" />
+      </div>
+    </Dialog>
   </div>
 </template>
 
 <script lang="ts" setup>
 import type { FileInfoWithStatus, FileTimeGroupInfo } from '@/stores/modules/home'
-import { computed, ref, watch } from 'vue'
+import { computed, ref, unref, watch } from 'vue'
 import { h, render } from 'vue'
 import FilePreviewButton from '@/views/home/components/FilePreviewButton.vue'
+import InfoDrawer from '@/components/InfoDrawer.vue'
+import ShareDialog from '@/components/ShareDialog.vue'
+import { RESOURCE_KIND } from '@/constants'
+import * as fileApi from '@/apis/file'
 
 const fileInfo = defineModel<FileInfoWithStatus>('file', { required: true })
 const fileGroup = defineModel<FileTimeGroupInfo>('fileGroup', { required: true })
 const image = computed(() => `data:image/jpeg;base64,${fileInfo.value.fileInfo.file}`)
+const infoVisible = ref<boolean>(false)
+const shareVisible = ref<boolean>(false)
+const trashVisible = ref<boolean>(false)
+
 const fileMenus = [
   {
     label: 'Info',
-    icon: 'pi pi-info-circle'
+    icon: 'pi pi-info-circle',
+    command: () => {
+      infoVisible.value = true
+    }
   },
   {
     label: 'Download',
@@ -37,7 +66,10 @@ const fileMenus = [
   },
   {
     label: 'Share',
-    icon: 'pi pi-user-plus'
+    icon: 'pi pi-user-plus',
+    command: () => {
+      shareVisible.value = true
+    }
   },
   {
     label: 'Add to album',
@@ -45,7 +77,10 @@ const fileMenus = [
   },
   {
     label: 'Move to trash',
-    icon: 'pi pi-trash'
+    icon: 'pi pi-trash',
+    command: () => {
+      trashVisible.value = true
+    }
   }
 ]
 const contextMenu = ref()
@@ -73,6 +108,20 @@ const showPreview = () => {
 
 const onRightClick = (event: MouseEvent) => {
   contextMenu.value.show(event)
+}
+
+const closeTrash = () => {
+  trashVisible.value = false
+}
+
+const moveToTrash = async () => {
+  try {
+    await fileApi.moveToTrash({
+      fileIds: [unref(fileInfo).fileInfo.fileId]
+    })
+  } finally {
+    trashVisible.value = false
+  }
 }
 </script>
 

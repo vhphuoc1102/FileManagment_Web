@@ -3,31 +3,53 @@ import type { App } from 'vue'
 import MainLayout from '@/layouts/main/MainLayout.vue'
 import UserLayout from '@/layouts/user/UserLayout.vue'
 import UserInfoPage from '@/views/user/UserInfoPage.vue'
+import UserDetailLayout from '@/layouts/user/UserDetailLayout.vue'
 
 const routes: AppRouteRecordRaw[] = [
   {
     path: '/',
-    redirect: '/home'
+    redirect: '/top'
+  },
+  {
+    path: '/top',
+    component: UserLayout,
+    children: [
+      {
+        path: '',
+        component: () => import('@/views/top/TopPage.vue')
+      }
+    ]
   },
   {
     path: '/login',
-    component: () => import('@/views/auth/LoginPage.vue'),
+    component: UserLayout,
     meta: {
       title: 'Login'
-    }
+    },
+    children: [
+      {
+        path: '',
+        component: () => import('@/views/auth/LoginPage.vue')
+      }
+    ]
   },
   {
     path: '/signup',
     name: 'Signup',
-    component: () => import('@/views/auth/RegisterPage.vue'),
+    component: UserLayout,
     meta: {
       title: 'Signup'
-    }
+    }, children: [
+      {
+        path: '',
+        component: () => import('@/views/auth/RegisterPage.vue')
+      }
+    ]
   },
   {
     path: '/storage',
     name: 'Storage',
-    component: MainLayout,
+    component: UserLayout,
     meta: {
       title: 'Storage'
     },
@@ -35,79 +57,110 @@ const routes: AppRouteRecordRaw[] = [
       {
         path: '',
         name: 'Root',
-        component: () => import('@/views/storage/StoragePage.vue')
+        component: UserDetailLayout,
+        children: [
+          {
+            path: '',
+            component: () => import('@/views/storage/StoragePage.vue')
+          }
+        ]
       },
       {
         path: ':id',
         name: 'Child',
-        component: () => import('@/views/storage/StoragePage.vue')
+        component: UserDetailLayout,
+        children: [
+          {
+            path: '',
+            component: () => import('@/views/storage/StoragePage.vue')
+          }
+        ]
       }
     ]
   },
   {
     path: '/location',
     name: 'Location',
-    component: MainLayout,
+    component: UserLayout,
     meta: {
       title: 'Location'
     }, children: [
       {
         path: '',
-        component: () => import('@/views/location/LocationPage.vue')
+        component: UserDetailLayout,
+        children: [
+          {
+            path: '',
+            component: () => import('@/views/location/LocationPage.vue')
+          }
+        ]
       }
     ]
   },
   {
     path: '/home',
     name: 'Home',
-    component: MainLayout,
+    component: UserLayout,
     meta: {
       title: 'Home'
     },
-    children: [
-      {
-        path: '',
-        component: () => import('@/views/home/HomePage.vue')
-      }
+    children: [{
+      path: '',
+      component: UserDetailLayout,
+      children: [
+        {
+          path: '',
+          component: () => import('@/views/home/HomePage.vue')
+        }
+      ]
+    }
     ]
   },
   {
     path: '/album',
     name: 'Album',
-    component: MainLayout,
+    component: UserLayout,
     meta: {
       title: 'Album'
     },
-    children: [
-      {
-        path: '',
-        component: () => import('@/views/album/AlbumPage.vue')
-      },
-      {
-        path: ':id/file',
-        name: 'Child',
-        component: () => import('@/views/album/AlbumPage.vue')
-      }
-    ]
+    children: [{
+      path: '',
+      component: UserDetailLayout,
+      children: [
+        {
+          path: '',
+          component: () => import('@/views/album/AlbumPage.vue')
+        },
+        {
+          path: ':id/file',
+          component: () => import('@/views/album/AlbumPage.vue')
+        }
+      ]
+    }]
   },
   {
     path: '/shared',
     name: 'SharedWithMe',
-    component: MainLayout,
+    component: UserLayout,
     meta: {
       title: 'Shared With Me'
     },
-    children: [
-      {
-        path: '/shared-with-me',
-        name: 'Shared with me',
-        component: () => import('@/views/shared/SharedWithMePage.vue')
-      },
-      {
-        path: '/sharing',
-        name: 'Sharing',
-        component: () => import('@/views/shared/SharingPage.vue')
-      }
+    children: [{
+      path: '',
+      component: UserDetailLayout,
+      children: [
+        {
+          path: '/shared-with-me',
+          name: 'Shared with me',
+          component: () => import('@/views/shared/SharedWithMePage.vue')
+        },
+        {
+          path: '/sharing',
+          name: 'Sharing',
+          component: () => import('@/views/shared/SharingPage.vue')
+        }
+      ]
+    }
     ]
   },
   {
@@ -123,6 +176,53 @@ const routes: AppRouteRecordRaw[] = [
         path: '',
         name: 'User Info',
         component: UserInfoPage
+      }
+    ]
+  },
+  {
+    path: '/user-detail',
+    component: UserLayout,
+    children: [
+      {
+        path: '',
+        name: 'User Detail',
+        component: () => import('@/views/user/UserPage.vue')
+      }
+    ]
+  },
+  {
+    path: '/search-result',
+    component: UserLayout,
+    children: [
+      {
+        path: '',
+        component: () => import('@/views/search/SearchResultPage.vue')
+      }
+    ]
+  },
+  {
+    path: '/image',
+    component: UserLayout,
+    children: [
+      {
+        path: ':id',
+        component: () => import('@/views/image/ImageDetailPage.vue')
+      }
+    ]
+  },
+  {
+    path: '/trash',
+    component: UserLayout,
+    children: [
+      {
+        path: '',
+        component: UserDetailLayout,
+        children: [
+          {
+            path: '',
+            component: () => import('@/views/trash/TrashPage.vue')
+          }
+        ]
       }
     ]
   }

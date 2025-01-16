@@ -1,5 +1,6 @@
 services:
-  frontend:
+  file-sharing-web:
+    container_name: file-sharing-web
     build:
       context: .
       dockerfile: Dockerfile

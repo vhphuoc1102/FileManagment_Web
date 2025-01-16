@@ -1,12 +1,17 @@
 import request from '@/axios'
 import type {
-  DownloadFileRequest,
+  DownloadFileRequest, GetFileDetailShareRequest,
   GetFileGroupsParam,
   GetFilesParam,
   GetMetaParam,
   MoveToTrashParam
 } from '@/apis/file/request'
-import type { GetFileGroupResponse, GetFileMetaDataResponse, GetFilesResponse } from '@/apis/file/response'
+import type {
+  GetFileDetailResponse,
+  GetFileGroupResponse,
+  GetFileMetaDataResponse,
+  GetFilesResponse
+} from '@/apis/file/response'
 import type { AxiosResponse } from 'axios'
 
 export const getFileGroups = (param: GetFileGroupsParam): Promise<Array<GetFileGroupResponse>> => {
@@ -31,4 +36,8 @@ export const getMeta = (param: GetMetaParam): Promise<GetFileMetaDataResponse> =
 
 export const moveToTrash = (param: MoveToTrashParam): Promise<void> => {
   return request.post({ url: '/file/trash', data: param })
+}
+
+export const getFileDetailShare = (data: GetFileDetailShareRequest): Promise<GetFileDetailResponse> => {
+  return request.post({ url: '/file/detail-share', data: data })
 }

@@ -20,3 +20,7 @@ export interface GetMetaParam {
 export interface MoveToTrashParam {
   fileIds: Array<number>
 }
+
+export interface GetFileDetailShareRequest {
+  shareCode: string
+}

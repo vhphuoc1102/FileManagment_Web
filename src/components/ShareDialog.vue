@@ -126,7 +126,6 @@ watch(() => privacy.value, (newPrivacy) => {
 })
 
 const clearShareInfo = () => {
-  debugger;
   inputEmail.value = ''
   isEmailNotValid.value = false
   emails.value = []

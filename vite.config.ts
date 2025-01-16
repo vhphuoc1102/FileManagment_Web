@@ -3,7 +3,6 @@ import { fileURLToPath, URL } from 'node:url'
 import { ConfigEnv, defineConfig, loadEnv, UserConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
-import vueDevTools from 'vite-plugin-vue-devtools'
 import Components from 'unplugin-vue-components/vite'
 import { PrimeVueResolver } from '@primevue/auto-import-resolver'
 
@@ -23,7 +22,6 @@ export default defineConfig(({ command, mode }: ConfigEnv): UserConfig => {
     plugins: [
       vue(),
       vueJsx(),
-      vueDevTools(),
       Components({
         resolvers: [
           PrimeVueResolver()

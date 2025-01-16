@@ -19,3 +19,10 @@ export interface GetFilesResponse {
 export interface GetFileMetaDataResponse {
   metadata: Map<string, object>;
 }
+
+export interface GetFileDetailResponse {
+  file: GetFileItemResponse;
+  authorId: number;
+  authorName: string;
+  privacy: number;
+}

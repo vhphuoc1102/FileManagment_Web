@@ -5,8 +5,8 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "5437:80"
+      - "5137:80"
     env_file:
-      - .env.base
+      - .env
     volumes:
       - .:/app

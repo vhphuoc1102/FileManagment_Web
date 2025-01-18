@@ -33,7 +33,7 @@
               <div v-for="(file, index) of files" :key="file.name + file.type + file.size"
                    class="p-8 rounded-border flex flex-col border border-surface items-center gap-4">
                 <div>
-                  <img :alt="file.name" height="50" role="presentation" width="100" />
+                  <img :alt="file.name" height="50" :src="file.objectURL" role="presentation" width="100" />
                 </div>
                 <span class="font-semibold text-ellipsis max-w-60 whitespace-nowrap overflow-hidden">{{ file.name
                   }}</span>
@@ -51,7 +51,7 @@
               <div v-for="(file, index) of uploadedFiles" :key="file.name + file.type + file.size"
                    class="p-8 rounded-border flex flex-col border border-surface items-center gap-4">
                 <div>
-                  <img :alt="file.name" height="50" role="presentation" width="100" />
+                  <img :alt="file.name" height="50" :src="file.objectURL" role="presentation" width="100" />
                 </div>
                 <span class="font-semibold text-ellipsis max-w-60 whitespace-nowrap overflow-hidden">{{ file.name
                   }}</span>

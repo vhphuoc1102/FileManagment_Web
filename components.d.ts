@@ -16,7 +16,6 @@ declare module 'vue' {
     AlbumItem: typeof import('./src/components/AlbumItem.vue')['default']
     Avatar: typeof import('primevue/avatar')['default']
     Badge: typeof import('primevue/badge')['default']
-    BlockUI: typeof import('primevue/blockui')['default']
     Breadcrumb: typeof import('primevue/breadcrumb')['default']
     Button: typeof import('primevue/button')['default']
     Card: typeof import('primevue/card')['default']
@@ -45,7 +44,6 @@ declare module 'vue' {
     Menubar: typeof import('primevue/menubar')['default']
     Message: typeof import('primevue/message')['default']
     Password: typeof import('primevue/password')['default']
-    Popover: typeof import('primevue/popover')['default']
     ProgressBar: typeof import('primevue/progressbar')['default']
     RadioButton: typeof import('primevue/radiobutton')['default']
     RadioButtonGroup: typeof import('primevue/radiobuttongroup')['default']
@@ -54,7 +52,6 @@ declare module 'vue' {
     ScrollPanel: typeof import('primevue/scrollpanel')['default']
     ShareDialog: typeof import('./src/components/ShareDialog.vue')['default']
     ShareDialogPublic: typeof import('./src/components/ShareDialogPublic.vue')['default']
-    SideBar: typeof import('primevue/sidebar')['default']
     Textarea: typeof import('primevue/textarea')['default']
     Toast: typeof import('primevue/toast')['default']
     Toolbar: typeof import('primevue/toolbar')['default']
@@ -64,6 +61,5 @@ declare module 'vue' {
   }
   export interface ComponentCustomProperties {
     Ripple: typeof import('primevue/ripple')['default']
-    StyleClass: typeof import('primevue/styleclass')['default']
   }
 }

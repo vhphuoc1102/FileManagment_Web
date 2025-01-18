@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="px-12">
     <div v-if="searchStore.getSearchUsers.length > 0" class="flex flex-col gap-5">
       <span class="text-2xl font-semibold">Users</span>
       <div>
@@ -12,7 +12,7 @@
       <span class="text-2xl font-semibold">
         Images
       </span>
-      <div>
+      <div class="flex gap-2 flex-wrap">
         <SearchImage v-for="(image, index) in searchStore.getSearchFiles" :key="index" :image="image" />
       </div>
     </div>

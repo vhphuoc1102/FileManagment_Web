@@ -9,6 +9,7 @@ export interface SearchUserResponse {
 }
 
 export interface SearchFileResponse {
+  shareCode: string,
   userId: number,
   fileId: number,
   fileName: string,

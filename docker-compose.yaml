@@ -1,0 +1,12 @@
+services:
+  file-sharing-web:
+    container_name: file-sharing-web
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5137:80"
+    env_file:
+      - .env
+    volumes:
+      - .:/app

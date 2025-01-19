@@ -57,7 +57,7 @@ const fileInfos = ref<FileInfo[]>([])
 const activeItemRef = ref(null)
 const ignoreRef = ref()
 
-// Event
+// Hooks
 onMounted(async () => {
   try {
     loadStart()

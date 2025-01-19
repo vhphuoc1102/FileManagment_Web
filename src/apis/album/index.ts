@@ -1,5 +1,5 @@
 import request from '@/axios'
-import type { CreateAlbumRequest, UpdateAlbumRequest } from '@/apis/album/request'
+import type { CreateAlbumRequest, DeleteAlbumRequest, UpdateAlbumRequest } from '@/apis/album/request'
 import type { FilterParams } from '@/apis/common/type'
 import type { GetAlbumsResponse } from '@/apis/album/response'
 
@@ -13,4 +13,8 @@ export const updateAlbum = (albumId: number, data: UpdateAlbumRequest) => {
 
 export const getAlbums = (data: FilterParams): Promise<GetAlbumsResponse> => {
   return request.post({ url: '/album/list', data: data })
+}
+
+export const deleteAlbum = (data: DeleteAlbumRequest): Promise<void> => {
+  return request.delete({ url: '/album', data: data })
 }

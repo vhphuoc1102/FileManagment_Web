@@ -29,6 +29,23 @@
   </a>
   <ContextMenu ref="contextMenu" :model="folderMenuItems" />
   <InfoDrawer v-model="infoVisible" :file-id="props.fileId" :visible="infoVisible" />
+  <ShareDialog v-if="shareVisible" v-model="shareVisible" :resource-id="props.fileId"
+               :resource-kind="RESOURCE_KIND.FILE"
+               :visible="shareVisible" />
+  <Dialog v-if="trashVisible" v-model:visible="trashVisible" :blockScroll="true" :closable="false"
+          :dismissableMask="true"
+          :draggable="false"
+          :pt="{
+            content: {
+              class: 'flex flex-col gap-5'
+            }
+          }" header="Confirm" modal>
+    <span>Do you sure want to move this image to trash ?</span>
+    <div class="flex justify-end gap-2">
+      <Button label="Cancel" severity="danger" type="button" @click="closeTrash" />
+      <Button label="Yes, I'm sure" type="button" @click="moveToTrash" />
+    </div>
+  </Dialog>
 </template>
 
 <script lang="ts" setup>
@@ -36,6 +53,10 @@ import type { FileInfo } from '@/types/file'
 import { computed, ref } from 'vue'
 import { useFileStoreWithOut } from '@/stores/modules/file'
 import InfoDrawer from '@/components/InfoDrawer.vue'
+import * as fileApi from '@/apis/file'
+import { RESOURCE_KIND } from '@/constants'
+import ShareDialog from '@/components/ShareDialog.vue'
+import * as toast from '@/composables/toast'
 
 // Stores
 const fileStore = useFileStoreWithOut()
@@ -56,6 +77,8 @@ const activated = computed(() => {
   return fileStore.activatedFiles.includes(props.fileId)
 })
 const folderOp = ref()
+const trashVisible = ref()
+const shareVisible = ref()
 const folderMenuItems = [
   {
     label: 'Info',
@@ -66,11 +89,37 @@ const folderMenuItems = [
   },
   {
     label: 'Download',
-    icon: 'pi pi-download'
+    icon: 'pi pi-download',
+    command: async () => {
+      try {
+        await fileApi.downloadFile({
+          fileIds: [props.fileId],
+          storageFileType: 0
+        }).then(response => {
+          const contentDisposition = response.headers['content-disposition']
+          const fileName = contentDisposition ? contentDisposition.split('filename=')[1].split(';')[0].trim() : 'downloaded_file'
+
+          const url = window.URL.createObjectURL(new Blob([response.data]))
+          const link = document.createElement('a')
+          link.href = url
+          link.setAttribute('download', fileName)
+          document.body.appendChild(link)
+          link.click()
+          link.remove()
+
+          toast.info('Downloaded successfully', '')
+        })
+      } catch (error) {
+        console.error(error)
+      }
+    }
   },
   {
     label: 'Share',
-    icon: 'pi pi-user-plus'
+    icon: 'pi pi-user-plus',
+    command: () => {
+      shareVisible.value = true
+    }
   },
   {
     label: 'Add to album',
@@ -78,7 +127,10 @@ const folderMenuItems = [
   },
   {
     label: 'Move to trash',
-    icon: 'pi pi-trash'
+    icon: 'pi pi-trash',
+    command: () => {
+      trashVisible.value = true
+    }
   }
 ]
 const contextMenu = ref()
@@ -111,6 +163,22 @@ const toggleFolderOp = (event: MouseEvent) => {
 
 const onRightClick = (event: MouseEvent) => {
   contextMenu.value.show(event)
+}
+
+const closeTrash = () => {
+  trashVisible.value = false
+}
+
+const moveToTrash = async () => {
+  try {
+    await fileApi.moveToTrash({
+      fileIds: [props.fileId]
+    }).then(() => {
+      window.location.reload()
+    })
+  } finally {
+    trashVisible.value = false
+  }
 }
 </script>
 

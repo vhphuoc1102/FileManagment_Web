@@ -5,8 +5,6 @@
     <span class="ml-2">
       {{ selectedItemsCount }} selected
     </span>
-    <Button aria-label="Share" class="ml-2" icon="pi pi-user-plus" rounded severity="secondary"
-            variant="text" />
     <Button aria-label="Download" class="ml-2" icon="pi pi-download" rounded severity="secondary"
             variant="text" />
     <Button aria-label="Trash" class="ml-2" icon="pi pi-trash" rounded severity="secondary" variant="text" />
@@ -23,7 +21,7 @@ const props = defineProps({
     type: String,
     default: 'album'
   }
-});
+})
 // Stores
 const albumStore = useAlbumStoreWithOut()
 
@@ -31,8 +29,7 @@ const albumStore = useAlbumStoreWithOut()
 const selectedItemsCount = computed(() => {
   if (props.type === 'album') {
     return albumStore.getActivatedAlbums.length
-  }
-  else {
+  } else {
     return albumStore.getAlbumFiles.filter((file) => file.activated).length
   }
 })

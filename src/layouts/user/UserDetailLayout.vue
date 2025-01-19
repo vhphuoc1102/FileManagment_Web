@@ -78,18 +78,6 @@ const menubarItems = ref([
     block: false
   },
   {
-    label: 'Shared with me',
-    icon: 'pi pi-share-alt',
-    route: '/shared-with-me',
-    block: false
-  },
-  {
-    label: 'My Sharing',
-    icon: 'pi pi-user-plus',
-    route: '/sharing',
-    block: false
-  },
-  {
     label: 'Locations',
     icon: 'pi pi-map-marker',
     route: '/location',

@@ -8,7 +8,7 @@
         <div>
           <div v-if="!hasAlbumIdQueryParam" class="flex flex-wrap gap-3 px-3">
             <AlbumItem v-for="(album, index) in albumInfos" :key="index" v-on-click-outside="onClickOutsideHandler"
-                       :album-id="album.albumId" :name="album.name" />
+                       :album-id="album.albumId" :description="album.description" :name="album.name" />
           </div>
           <div v-else class="flex flex-wrap gap-3 px-3">
             <FileItem v-for="(fileInfo, index) in fileInfos" :key="index" ref="activeItemRef"
@@ -91,7 +91,6 @@ const fetchFiles = async () => {
   } finally {
     loadDone()
   }
-
 }
 
 onMounted(async () => {

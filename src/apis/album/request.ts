@@ -15,3 +15,7 @@ export interface ModifyFileAlbumRequest {
   operation: number;
   fileIds: Array<number>;
 }
+
+export interface DeleteAlbumRequest {
+  albumIds: Array<number>
+}

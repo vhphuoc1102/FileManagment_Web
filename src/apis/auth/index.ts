@@ -6,6 +6,10 @@ export const loginApi = (data: AuthRequest): Promise<AuthResponse> => {
   return request.post({ url: '/auth/login', data })
 }
 
+export const logoutApi = (): Promise<void> => {
+  return request.post({ url: '/auth/logout' })
+}
+
 export const registerApi = (data: AuthRequest): Promise<void> => {
   return request.post({ url: '/auth/register', data })
 }

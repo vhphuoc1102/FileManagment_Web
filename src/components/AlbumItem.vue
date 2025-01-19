@@ -29,6 +29,27 @@
   </a>
   <AlbumDialog v-model="showAlbumDialog" :album-info="props" />
   <ContextMenu ref="contextMenu" :model="menuItems" />
+  <Drawer
+    v-model:visible="infoVisible"
+    :pt="{
+    root: {
+      class: '!w-[30rem] p-6 bg-white shadow-lg rounded-lg'
+    }
+  }"
+    header="Image information"
+    position="right"
+  >
+    <div class="space-y-4">
+      <div class="flex items-center">
+        <span class="font-semibold text-gray-700">Album name:</span>
+        <span class="ml-2 text-gray-600">{{ props.name }}</span>
+      </div>
+      <div class="flex items-start">
+        <span class="font-semibold text-gray-700">Album description:</span>
+        <span class="ml-2 text-gray-600">{{ props.description }}</span>
+      </div>
+    </div>
+  </Drawer>
 </template>
 
 <script lang="ts" setup>
@@ -37,12 +58,17 @@ import { useAlbumStoreWithOut } from '@/stores/modules/album'
 import type { AlbumInfo } from '@/types/album'
 import { useRouter } from 'vue-router'
 import AlbumDialog from '@/components/AlbumDialog.vue'
+import * as albumApi from '@/apis/album'
+import * as toast from '@/composables/toast'
+import * as fileApi from '@/apis/file'
+import { usePageLoading } from '@/hooks/web/usePageLoading'
 
 // Stores
 const albumStore = useAlbumStoreWithOut()
 const router = useRouter()
 
 // Props
+const { loadStart, loadDone } = usePageLoading()
 const props = withDefaults(defineProps<AlbumInfo>(), {
   name: '',
   albumId: -1,
@@ -60,33 +86,71 @@ const folderOp = ref()
 const menuItems = [
   {
     label: 'Info',
-    icon: 'pi pi-info-circle'
+    icon: 'pi pi-info-circle',
+    command: () => {
+      infoVisible.value = true
+    }
   },
   {
     label: 'Download',
-    icon: 'pi pi-download'
+    icon: 'pi pi-download',
+    command: async () => {
+      const fileIds = await fetchFiles(props.albumId)
+      if (fileIds.length === 0) {
+        toast.warn('No files in this album', '')
+      } else {
+        await fileApi.downloadFile({
+          fileIds: fileIds.map(file => file.fileId),
+          storageFileType: 0
+        })
+          .then(response => {
+            const contentDisposition = response.headers['content-disposition']
+            const fileName = contentDisposition ? contentDisposition.split('filename=')[1].split(';')[0].trim() : 'downloaded_file'
+
+            const url = window.URL.createObjectURL(new Blob([response.data]))
+            const link = document.createElement('a')
+            link.href = url
+            link.setAttribute('download', fileName)
+            document.body.appendChild(link)
+            link.click()
+            link.remove()
+
+            toast.info('Downloaded successfully', '')
+          })
+          .catch(error => {
+            toast.error('Download failed', '')
+            console.error(error)
+          })
+      }
+    }
   },
   {
     label: 'Rename',
-    icon: 'pi pi-download',
+    icon: 'pi pi-pencil',
     command: () => {
       showAlbumDialog.value = true
     }
   },
   {
-    label: 'Share',
-    icon: 'pi pi-user-plus'
-  },
-  {
-    label: 'Add to album',
-    icon: 'pi pi-images'
-  },
-  {
     label: 'Move to trash',
-    icon: 'pi pi-trash'
+    icon: 'pi pi-trash',
+    command: async () => {
+      await albumApi.deleteAlbum({
+        albumIds: [props.albumId]
+      })
+        .then(() => {
+          toast.success('Delete album success', '')
+          window.location.reload()
+        })
+        .catch(error => {
+          toast.error('Delete album failed', '')
+          console.error(error)
+        })
+    }
   }
 ]
 const contextMenu = ref()
+const infoVisible = ref()
 
 // Methods
 const onClick = () => {
@@ -119,6 +183,23 @@ const toggleFolderOp = (event: MouseEvent) => {
 
 const onRightClick = (event: MouseEvent) => {
   contextMenu.value.show(event)
+}
+
+const fetchFiles = async (albumId: number) => {
+  try {
+    loadStart()
+    return (await fileApi.getFiles({
+      albumId: albumId
+    })).map(file => {
+      return {
+        fileId: file.fileId
+      }
+    })
+  } catch {
+    return []
+  } finally {
+    loadDone()
+  }
 }
 </script>
 

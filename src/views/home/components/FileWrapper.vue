@@ -44,6 +44,7 @@ import InfoDrawer from '@/components/InfoDrawer.vue'
 import ShareDialog from '@/components/ShareDialog.vue'
 import { RESOURCE_KIND } from '@/constants'
 import * as fileApi from '@/apis/file'
+import * as toast from '@/composables/toast'
 
 const fileInfo = defineModel<FileInfoWithStatus>('file', { required: true })
 const fileGroup = defineModel<FileTimeGroupInfo>('fileGroup', { required: true })
@@ -62,7 +63,30 @@ const fileMenus = [
   },
   {
     label: 'Download',
-    icon: 'pi pi-download'
+    icon: 'pi pi-download',
+    command: async () => {
+      try {
+        await fileApi.downloadFile({
+          fileIds: [fileInfo.value.fileInfo.fileId],
+          storageFileType: 0
+        }).then(response => {
+          const contentDisposition = response.headers['content-disposition']
+          const fileName = contentDisposition ? contentDisposition.split('filename=')[1].split(';')[0].trim() : 'downloaded_file'
+
+          const url = window.URL.createObjectURL(new Blob([response.data]))
+          const link = document.createElement('a')
+          link.href = url
+          link.setAttribute('download', fileName)
+          document.body.appendChild(link)
+          link.click()
+          link.remove()
+
+          toast.info('Downloaded successfully', '')
+        })
+      } catch (error) {
+        console.error(error)
+      }
+    }
   },
   {
     label: 'Share',

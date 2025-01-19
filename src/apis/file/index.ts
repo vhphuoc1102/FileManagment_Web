@@ -41,3 +41,7 @@ export const moveToTrash = (param: MoveToTrashParam): Promise<void> => {
 export const getFileDetailShare = (data: GetFileDetailShareRequest): Promise<GetFileDetailResponse> => {
   return request.post({ url: '/file/detail-share', data: data })
 }
+
+export const getFileDetailPublicShare = (data: GetFileDetailShareRequest): Promise<GetFileDetailResponse> => {
+  return request.post({ url: '/file/detail-share/public', data: data })
+}

@@ -27,21 +27,36 @@ import { computed, onMounted, ref } from 'vue'
 import * as fileApi from '@/apis/file'
 import type { GetFileDetailResponse } from '@/apis/file/response'
 import * as toast from '@/composables/toast'
+import { useUserStoreWithOut } from '@/stores/modules/user'
 
 const route = useRoute()
+const userStore = useUserStoreWithOut()
 const fileDetail = ref<GetFileDetailResponse>()
 const image = computed(() => `data:image/jpeg;base64,${fileDetail.value?.file.fileContent}`)
 
 onMounted(async () => {
   const shareCode = route.params.id as string
-  await fileApi.getFileDetailShare({
-    shareCode: shareCode
-  }).then(res => {
-    fileDetail.value = res
-  }).catch(err => {
-    toast.error('Failed to get file detail', '')
-    console.error(err)
-  })
+  const isPublic = !userStore.getUserInfo || !userStore.getToken
+
+  if (isPublic) {
+    await fileApi.getFileDetailPublicShare({
+      shareCode: shareCode
+    }).then(res => {
+      fileDetail.value = res
+    }).catch(err => {
+      toast.error('Failed to get file detail', '')
+      console.error(err)
+    })
+  } else {
+    await fileApi.getFileDetailShare({
+      shareCode: shareCode
+    }).then(res => {
+      fileDetail.value = res
+    }).catch(err => {
+      toast.error('Failed to get file detail', '')
+      console.error(err)
+    })
+  }
 })
 
 </script>

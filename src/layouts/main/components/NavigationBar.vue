@@ -18,7 +18,7 @@
             class: 'cursor-pointer'
           }
         }" class="pi pi-search" @click="search" />
-        <InputText v-model="keyword" class="w-96" placeholder="Search" />
+        <InputText v-model="keyword" class="w-96" placeholder="Search" @keydown.enter="search" />
       </IconField>
     </template>
     <template #end>

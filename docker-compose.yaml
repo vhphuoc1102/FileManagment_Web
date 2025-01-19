@@ -1,11 +1,11 @@
 services:
   file-sharing-web:
-    container_name: file-sharing-web
+    container_name: web
     build:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "5137:80"
+      - "5173:80"
     env_file:
       - .env
     volumes:

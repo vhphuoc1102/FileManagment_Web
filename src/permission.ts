@@ -29,8 +29,11 @@ router.beforeEach(async (to, from, next) => {
         next()
       } else {
         const redirect = decodeURIComponent(redirectPath as string)
-        const nextData = to.path === redirect ? { ...to, replace: true } : { path: redirect }
-        next(nextData)
+        if (to.path === redirect) {
+          next()
+        } else {
+          next({ path: redirect })
+        }
       }
     }
   } else {

@@ -20,14 +20,15 @@
           }
                 }" aria-controls="overlay_menu" aria-haspopup="true"
               icon="pi pi-ellipsis-v" rounded variant="text" @click="toggleFolderOp" />
-      <Menu id="overlay_menu" ref="folderOp" :model="folderMenuItems" :popup="true" :pt=" {
+      <Menu id="overlay_menu" ref="folderOp" :model="props.albumId ? albumMenuItems: folderMenuItems" :popup="true"
+            :pt=" {
             submenuLabel:  {
               class: 'py-0'
             }
           }" />
     </div>
   </a>
-  <ContextMenu ref="contextMenu" :model="folderMenuItems" />
+  <ContextMenu ref="contextMenu" :model="props.albumId ? albumMenuItems: folderMenuItems" />
   <InfoDrawer v-model="infoVisible" :file-id="props.fileId" :visible="infoVisible" />
   <ShareDialog v-if="shareVisible" v-model="shareVisible" :resource-id="props.fileId"
                :resource-kind="RESOURCE_KIND.FILE"
@@ -43,13 +44,12 @@
     <span>Do you sure want to move this image to trash ?</span>
     <div class="flex justify-end gap-2">
       <Button label="Cancel" severity="danger" type="button" @click="closeTrash" />
-      <Button label="Yes, I'm sure" type="button" @click="moveToTrash" />
+      <Button label="Yes, I'm sure" type="button" @click="remove" />
     </div>
   </Dialog>
 </template>
 
 <script lang="ts" setup>
-import type { FileInfo } from '@/types/file'
 import { computed, ref } from 'vue'
 import { useFileStoreWithOut } from '@/stores/modules/file'
 import InfoDrawer from '@/components/InfoDrawer.vue'
@@ -57,15 +57,23 @@ import * as fileApi from '@/apis/file'
 import { RESOURCE_KIND } from '@/constants'
 import ShareDialog from '@/components/ShareDialog.vue'
 import * as toast from '@/composables/toast'
+import * as albumApi from '@/apis/album'
 
 // Stores
 const fileStore = useFileStoreWithOut()
 
 // Props
-const props = withDefaults(defineProps<FileInfo>(), {
+const props = withDefaults(defineProps<{
+  name: string
+  fileId: number
+  image?: File,
+  file?: Uint8Array,
+  albumId?: number
+}>(), {
   name: '',
   fileId: -1,
-  file: undefined
+  file: undefined,
+  albumId: undefined
 })
 
 // Variables
@@ -133,6 +141,23 @@ const folderMenuItems = [
     }
   }
 ]
+
+const albumMenuItems = [...folderMenuItems, {
+  label: 'Remove from album',
+  icon: 'pi pi-pencil',
+  command: async () => {
+    if (!props.albumId) return
+    await albumApi.removeFileFromAlbum(props.albumId,
+      [props.fileId]
+    ).then(() => {
+      toast.info('Remove from album success', '')
+      window.location.reload()
+    }).catch(error => {
+      toast.error('Remove from album failed', '')
+      console.error(error)
+    })
+  }
+}]
 const contextMenu = ref()
 
 // Methods
@@ -169,7 +194,7 @@ const closeTrash = () => {
   trashVisible.value = false
 }
 
-const moveToTrash = async () => {
+const remove = async () => {
   try {
     await fileApi.moveToTrash({
       fileIds: [props.fileId]

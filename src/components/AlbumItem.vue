@@ -62,6 +62,7 @@ import * as albumApi from '@/apis/album'
 import * as toast from '@/composables/toast'
 import * as fileApi from '@/apis/file'
 import { usePageLoading } from '@/hooks/web/usePageLoading'
+import { deleteAlbum } from '@/apis/album'
 
 // Stores
 const albumStore = useAlbumStoreWithOut()

@@ -12,7 +12,9 @@
           </div>
           <div v-else class="flex flex-wrap gap-3 px-3">
             <FileItem v-for="(fileInfo, index) in fileInfos" :key="index" ref="activeItemRef"
-                      :file="fileInfo.file" :file-id="fileInfo.fileId" :name="fileInfo.name"></FileItem>
+                      :album-id="albumStore.getAlbumId" :file="fileInfo.file"
+                      :file-id="fileInfo.fileId"
+                      :name="fileInfo.name" />
           </div>
         </div>
       </div>

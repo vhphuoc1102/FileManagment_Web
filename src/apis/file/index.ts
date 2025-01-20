@@ -26,12 +26,20 @@ export const downloadFile = (data: DownloadFileRequest): Promise<AxiosResponse<B
   return request.post({ url: '/file/download', data: data, responseType: 'blob' })
 }
 
+export const downloadFilePublic = (data: DownloadFileRequest): Promise<AxiosResponse<Blob>> => {
+  return request.post({ url: '/file/download/public', data: data, responseType: 'blob' })
+}
+
 export const getFiles = (param: GetFilesParam): Promise<Array<GetFilesResponse>> => {
   return request.get({ url: '/file/list', params: param })
 }
 
 export const getMeta = (param: GetMetaParam): Promise<GetFileMetaDataResponse> => {
   return request.get({ url: '/file/meta', params: param })
+}
+
+export const getMetaPublic = (param: GetMetaParam): Promise<GetFileMetaDataResponse> => {
+  return request.get({ url: '/file/meta/public', params: param })
 }
 
 export const moveToTrash = (param: MoveToTrashParam): Promise<void> => {

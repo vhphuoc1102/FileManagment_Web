@@ -25,8 +25,11 @@
 
 <script lang="ts" setup>
 import { defineProps, ref, onMounted } from 'vue'
-import { getMeta } from '@/apis/file'
+import * as fileApi from '@/apis/file'
+import { useUserStoreWithOut } from '@/stores/modules/user'
+import { getMeta, getMetaPublic } from '@/apis/file'
 
+const userStore = useUserStoreWithOut()
 const props = defineProps({
   visible: {
     type: Boolean,
@@ -34,17 +37,32 @@ const props = defineProps({
   },
   fileId: {
     type: Number,
-    required: true
+    required: false,
+    default: -1
+  },
+  authorId: {
+    type: Number,
+    required: false
   }
 })
 
 const isVisible = defineModel<boolean | undefined>()
 const metadata = ref<Record<string, any>>({})
 onMounted(async () => {
-  const result = await getMeta({
+  const isPublic = !userStore.getUserInfo || !userStore.getToken
+  const param = props.authorId ? {
+    fileId: props.fileId,
+    authorId: props.authorId
+  } : {
     fileId: props.fileId
-  })
-  metadata.value = result.metadata
+  }
+  let result
+  if (!isPublic) {
+    result = await fileApi.getMeta(param)
+  } else {
+    result = await fileApi.getMetaPublic(param)
+  }
+  metadata.value = result?.metadata
 })
 </script>
 

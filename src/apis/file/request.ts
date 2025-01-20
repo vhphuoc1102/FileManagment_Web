@@ -3,6 +3,7 @@ export interface GetFileGroupsParam {
 }
 
 export interface DownloadFileRequest {
+  authorId?: number,
   fileIds: number[],
   storageFileType: number
 }
@@ -14,7 +15,8 @@ export interface GetFilesParam {
 }
 
 export interface GetMetaParam {
-  fileId: number
+  fileId: number,
+  authorId?: number
 }
 
 export interface MoveToTrashParam {
@@ -22,5 +24,6 @@ export interface MoveToTrashParam {
 }
 
 export interface GetFileDetailShareRequest {
-  shareCode: string
+  shareCode?: string,
+  fileId?: number
 }

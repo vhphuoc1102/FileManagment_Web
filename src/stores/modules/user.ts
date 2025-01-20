@@ -49,6 +49,9 @@ export const useUserStore = defineStore('user', {
     },
     isAuth() {
       return !!this.token
+    },
+    isPublic() {
+      return !this.token || !this.userInfo
     }
   },
   persist: true

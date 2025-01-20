@@ -3,6 +3,14 @@ import type { CreateAlbumRequest, DeleteAlbumRequest, UpdateAlbumRequest } from 
 import type { FilterParams } from '@/apis/common/type'
 import type { GetAlbumsResponse } from '@/apis/album/response'
 
+export const removeFileFromAlbum = (albumId: number, fileIds: Array<number>) => {
+  return request.delete({
+    url: `/album/${albumId}/file`, data: {
+      fileIds: fileIds
+    }
+  })
+}
+
 export const createAlbum = (data: CreateAlbumRequest) => {
   return request.post({ url: '/album', data: data })
 }

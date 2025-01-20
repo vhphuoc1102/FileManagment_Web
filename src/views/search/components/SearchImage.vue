@@ -18,8 +18,12 @@ const image = computed(() =>
   `data:image/jpeg;base64,${props.image?.fileContent}`
 )
 
-const onClick = () => {
-  router.push(`/image/${props.image?.shareCode}`)
+const onClick = async () => {
+  if (props.image?.shareCode) {
+    await router.push(`/image/${props.image?.shareCode}`)
+  } else if (props.image?.fileId) {
+    await router.push(`/image/${props.image?.fileId}?fileId=${props.image?.fileId}`)
+  }
 }
 </script>
 

@@ -23,7 +23,7 @@
             <div class="flex flex-wrap gap-3 px-3">
               <FileItem v-for="(fileInfo, index) in fileInfos" :key="index" ref="activeItemRef"
                         v-on-click-outside="onClickOutsideHandler"
-                        :file="fileInfo.file" :file-id="fileInfo.fileId" :name="fileInfo.name"></FileItem>
+                        :file="fileInfo.file" :file-id="fileInfo.fileId" :name="fileInfo.name" />
             </div>
           </AccordionContent>
         </AccordionPanel>

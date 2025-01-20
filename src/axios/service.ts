@@ -4,6 +4,7 @@ import * as toast from '@/composables/toast'
 import type { AxiosInstance, AxiosResponse, CommonError, RequestConfig } from './types'
 import { REQUEST_TIMEOUT } from '@/constants'
 import { useUserStoreWithOut } from '@/stores/modules/user'
+import router from '@/router'
 
 export const PATH_URL = import.meta.env.VITE_API_BASE_PATH
 const UNKNOWN_ERROR = 'Unknown error'
@@ -20,12 +21,15 @@ axiosInstance.interceptors.response.use(
     abortControllerMap.delete(url)
     return res
   },
-  (error: AxiosError<CommonError>) => {
+  async (error: AxiosError<CommonError>) => {
     console.log('err： ' + error) // for debug
-    toast.error('Error', error?.response?.data?.message || UNKNOWN_ERROR)
-    if (error?.response?.status === 401) {
+    if (error?.response?.status === 401 || error?.response?.status === 403) {
       const userStore = useUserStoreWithOut()
       userStore.logout()
+      toast.error('Error', 'Session timeout')
+      await router.push('/login')
+    } else {
+      toast.error('Error', error?.response?.data?.message || UNKNOWN_ERROR)
     }
     return Promise.reject(error)
   }
